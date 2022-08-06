@@ -1,0 +1,51 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I love VN - Hệ thống quyên góp từ thiện</title>
+  </head>
+
+  <body>
+    <h1>Hệ thống xem và quản lý donations</h1>
+    <table style="border: 1px solid black;">
+    <thead>
+      <th>Mã số</th>
+      <th>Project id</th>
+      <th>Số tài khoản</th>
+      <th>Họ và tên</th>
+      <th>Số tiền</th>
+      <th>Mã số giao dịch</th>
+      <th>Lời nhắn nhủ</th>
+      <th>created time</th>
+      <th>upated time</th>
+      <th>tài khoản quyên góp</th>
+    </thead>
+    <tbody>
+      <c:forEach items="${donations}" var="donation">
+        <tr>
+          <td> <c:out value="${donation.id}" /> </td>
+          <td> <c:out value="${donation.project.id}" /> </td>
+          <td> <c:out value="${donation.accountNumber}"></c:out> </td>
+          <td> <c:out value="${donation.fullName}"></c:out> </td>
+          <td> <c:out value="${donation.amount}"></c:out> </td>
+          <td> <c:out value="${donation.transRefNo}"></c:out> </td>
+          <td> <c:out value="${donation.message}"></c:out> </td>
+          <td> <c:out value="${donation.createdTime}"></c:out> </td>
+          <td> <c:out value="${donation.updatedTime}"></c:out> </td>
+          <c:if test="${donation.user != null}">
+            <td>
+              <c:out value="${donation.user.email}"></c:out>
+            </td>
+          </c:if>
+        </tr>
+      </c:forEach>
+    </tbody>
+  </table>
+  </body>
+
+  </html>

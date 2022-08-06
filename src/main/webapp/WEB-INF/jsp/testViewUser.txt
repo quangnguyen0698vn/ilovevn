@@ -1,0 +1,41 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I love VN - Hệ thống quyên góp từ thiện</title>
+  </head>
+
+  <body>
+    <h1>Hệ thống xem và quản lý users</h1>
+    <table style="border: 1px solid black;">
+    <thead>
+      <th>Mã số</th>
+      <th>Họ và tên</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Profile Image</th>
+      <th>Address</th>
+      <th>Phone number</th>
+    </thead>
+    <tbody>
+      <c:forEach items="${users}" var="user">
+        <tr>
+          <td> <c:out value="${user.id}" /> </td>
+          <td> <c:out value="${user.fullName}" /></td>
+          <td> <c:out value="${user.email}" /></td>
+          <td> <c:out value="${user.role}" /></td>
+          <td> <img src="${user.getProfilePhotoPath()}" style="width: 250px; height: 250px" alt="user image" /></td>
+          <td> <c:out value="${user.address}" />
+          <td> <c:out value="${user.phoneNumber}" />
+        </tr>
+      </c:forEach>
+    </tbody>
+  </table>
+  </body>
+
+  </html>
