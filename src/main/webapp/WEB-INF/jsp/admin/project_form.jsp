@@ -13,7 +13,7 @@
 
 <body class="d-flex flex-column min-vh-100">
 <%-- Navbar--%>
-<jsp:include page="header.jsp"/>
+<jsp:include page="fragments/header.jsp"/>
     <span id="contextPath" style="display:none;"><c:out value="${pageContext.request.contextPath}"></c:out></span>
     <section class="container">
         <h2 class="mb-5">
@@ -245,7 +245,7 @@
     </section>
 
 <%--Footer--%>
-<jsp:include page="footer.jsp"/>
+<jsp:include page="fragments/footer.jsp"/>
 
 <%-- js framework --%>
 <jsp:include page="../common/jsFramework.jsp"/>
@@ -262,7 +262,7 @@
 <script src=<c:url value="/js/project_form.js" context="${pageContext.request.contextPath}"></c:url>></script>
 <script src=<c:url value="/js/project_form_image.js" context="${pageContext.request.contextPath}"></c:url>></script>
 
-<jsp:include page="ckeditor.jsp"></jsp:include>
+<jsp:include page="fragments/ckeditor.jsp"></jsp:include>
 </body>
 </html>
 
