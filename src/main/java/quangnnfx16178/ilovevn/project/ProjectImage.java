@@ -12,7 +12,6 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Table(name = "project_images")
-
 public class ProjectImage implements Comparable<ProjectImage> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -20,7 +19,6 @@ public class ProjectImage implements Comparable<ProjectImage> {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "project_id")
     private Project project;
 
     @Basic
@@ -38,7 +36,6 @@ public class ProjectImage implements Comparable<ProjectImage> {
         this.fileName = fileName;
     }
 
-    // BELOW IS ADDED MANUALLY BY QUANG
 
     @Transient
     public String getImagePath() {
@@ -46,12 +43,6 @@ public class ProjectImage implements Comparable<ProjectImage> {
         return "/images/project-images/" + this.project.getId() + "/" + this.fileName;
     }
 
-    @Override
-    public int compareTo(ProjectImage that) {
-        return this.fileName.compareTo(that.fileName);
-    }
-
-    // END OF QUANG'S CODE
 
     @Override
     public boolean equals(Object o) {
@@ -71,5 +62,10 @@ public class ProjectImage implements Comparable<ProjectImage> {
         result = 31 * result + (project != null ? project.hashCode() : 0);
         result = 31 * result + (fileName != null ? fileName.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public int compareTo(ProjectImage that) {
+        return Integer.compare(this.getId(), that.getId());
     }
 }

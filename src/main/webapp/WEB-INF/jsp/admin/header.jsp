@@ -29,7 +29,7 @@
         </li>
 
         <li class="nav-item p-1">
-          <a href="project.html" class="nav-link active">Dự án Quyên Góp</a>
+          <a href="${pageContext.request.contextPath}/admin/projects/" class="nav-link active">Dự án Quyên Góp</a>
         </li>
 
         <li class="nav-item p-1">

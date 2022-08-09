@@ -1,0 +1,30 @@
+package quangnnfx16178.ilovevn.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import quangnnfx16178.ilovevn.donation.Donation;
+import quangnnfx16178.ilovevn.donation.DonationService;
+
+import java.util.List;
+
+@Controller
+@RequestMapping("/donation")
+public class DonationController {
+    @Autowired
+    private DonationService service;
+
+    @GetMapping("/viewDonations")
+    public String viewDonations(Model model) {
+        List<Donation> donations = service.listAll();
+        for (Donation donation : donations) {
+            System.out.println(donation.getFullName());
+            if (donation.getUser() != null)
+                System.out.println(donation.getUser().getEmail());
+        }
+        model.addAttribute("donations", service.listAll());
+        return "testViewDonation";
+    }
+}

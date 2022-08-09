@@ -2,18 +2,32 @@
 	/* small screen */
 	div.full-details { display: none }
 	div.less-details { display: block; }
+	.image-column {display: none; }
+	#bulk-selector-enable {display: none; }
+
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
 	/* medium screen */
 	div.full-details { display: block; }
 	div.less-details { display: none; }
+	.image-column {display: none; }
 	.hideable-column { display: none }
 }
 
-@media screen and (min-width: 1024px) {
-	/* small screen */
+@media screen and (min-width: 1024px) and (max-width: 1290px) {
+	/* large screen */
+	div.full-details { display: block; }
 	div.less-details { display: none; }
+	.image-column {display: none; }
+	.hideable-column { display: table-cell; }
+}
+
+@media screen and (min-width: 1290px) {
+	/* large screen */
+	div.full-details { display: block; }
+	div.less-details { display: none; }
+	.image-column {display: table-cell; }
 	.hideable-column { display: table-cell; }
 }
 
@@ -23,4 +37,29 @@
 
 #divFullDescription .ck-editor__editable_inline {
 	min-height: 250px;
+}
+
+.link-delete {
+	color: gray;
+}
+
+.link-edit {
+	color: green;
+}
+
+.bootstrap-table .fixed-table-container .table thead th .th-inner {
+	white-space: normal;
+
+}
+
+.bootstrap-table .fixed-table-container .table thead th {
+	vertical-align: middle;
+}
+
+.bootstrap-table .fixed-table-container .table td, .bootstrap-table .fixed-table-container .table th {
+	text-align: center;
+}
+
+.checkbox-column {
+	display: none;
 }

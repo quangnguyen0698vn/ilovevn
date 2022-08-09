@@ -4,20 +4,30 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.UpdateTimestamp;
-import quangnnfx16178.ilovevn.entity.Charity;
+import quangnnfx16178.ilovevn.charity.Charity;
+import quangnnfx16178.ilovevn.donation.Donation;
+import quangnnfx16178.ilovevn.user.User;
 
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
+/**
+ * Đây là class Project - entity này được mapping với bảng projects của cơ sở dữ liệu, lưu trữ thông tin của từng dự án như
+ * tên, mô tả ngắn, mô tả đầy đủ, số tiền muốn quyên góp, số tiền đã quyên góp được, ngày bắt đầu, ngày kết thúc, lưu trữ
+ * tên các hình ảnh mô tả dự án,...
+ * Sử dụng Project Lombok để tránh boilerplate code cho getter, setter và constructor
+ * @Author Nguyễn Ngọc Quang
+ */
 @Entity
 @Table(name = "projects")
 @Getter
 @Setter
 @NoArgsConstructor
+@NamedQuery(name = "Project.findByProjectIdWithLocking", query = "SELECT p FROM Project p WHERE p.id=:id", lockMode = LockModeType.PESSIMISTIC_WRITE)
 public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -51,36 +61,71 @@ public class Project {
     @Basic
     @Column(name = "expired_date", nullable = false, updatable = false)
     private Date expiredDate;
+
+    @Basic
+    @Column(name = "raised_amount", nullable = false)
+    private Long raisedAmount = 0L;
+
     @Basic
     @Column(name = "target_amount", nullable = false)
     private Long targetAmount;
+
+    @Formula(value = "raised_amount / target_amount")
+    private Double raisedPercentage;
 
     @ManyToOne
     @JoinColumn(name = "charity_id")
     private Charity charity;
 
-    // BELOW IS ADDED MANUALLY BY QUANG
-
-
-    //    https://www.baeldung.com/jpa-cascade-types
+    /**
+     *  Cách mapping như dưới đây đảm bảo mỗi khi dự án được xóa khỏi bảng projects thì thông tin liên quan cũng được xóa
+     *  khỏi bẳng project_images
+     *  Tham khảo thêm tại https://www.baeldung.com/jpa-cascade-types
+     */
     @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ProjectImage> images = new HashSet<>();
+
+    /**
+     * Mapping như dưới đây để lấy thông tin về những quyên góp cho dự án này
+     * Hiện tại chưa cần sử dụng nhưng có thể tương lai sẽ cần
+     */
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     @OrderBy("id asc")
-    private Set<ProjectImage> images;
+    private List<Donation> donations = new ArrayList<>();
+
+    /**
+     * So sánh ngày bắt đầu thực hiên quyên góp với ngày hôm nay
+     * @return true nếu dự án đã bắt đầu quyên góp, false nếu dự án chưa được bắt đầu
+     */
+
+    public boolean isAlreadyStarted() {
+        java.util.Date date = new java.util.Date();
+        java.sql.Date sqlDate = new Date(date.getTime());
+        int compare = sqlDate.compareTo(this.startedDate);
+        return compare >= 0;
+    }
 
 
-    @Transient
+    /**
+     * Hàm trả về path đến hình ảnh chính của dự án (href = origin + path)
+     * Hình ảnh chính là hình ảnh sẽ hiển thị khi list dự án ở landing page
+     * @return  path đến hình ảnh chính của dự án
+     */
     public String getImagePath() {
         if (id == null || mainImage == null) return "/images/default-project-image.png";
         return "/images/project-images/" + this.id + "/main/" + this.mainImage;
     }
 
+
+    /**
+     * Kiểm tra xem filename có nằm trong danh sách hình ảnh minh họa của dự án
+     * @param fileName: tên file hình ảnh (ví dụ "example.png")
+     * @return  true hoặc false
+     */
     public boolean containsImageName(String fileName) {
         if (images == null) return false;
         return images.stream().anyMatch(image -> image.getFileName().equals(fileName));
     }
-
-    // END OF QUANG'S CODE
-
 
     @Override
     public boolean equals(Object o) {

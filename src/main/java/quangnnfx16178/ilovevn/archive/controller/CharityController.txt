@@ -1,0 +1,25 @@
+package quangnnfx16178.ilovevn.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import quangnnfx16178.ilovevn.charity.CharityService;
+import quangnnfx16178.ilovevn.user.UserService;
+
+@Controller
+@RequestMapping("/charity")
+public class CharityController {
+
+    @Autowired
+    private CharityService service;
+
+    @GetMapping("/viewCharity")
+    public String viewUsers(Model model, @RequestParam Integer id) {
+        model.addAttribute("charity", service.getCharityById(id));
+        return "testViewCharity";
+    }
+}
