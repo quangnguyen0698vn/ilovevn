@@ -51,7 +51,7 @@
 <%--                                     <input hidden name="charityId" value="${project.charity.id}"/>--%>
 <%--                                 </c:if>--%>
                                 <select
-                                        <c:if test="${project.id != null}"><c:out value="disabled"></c:out></c:if>
+                                        <c:if test="${project.isAlreadyStarted()}"><c:out value="disabled"></c:out></c:if>
                                         class="form-control" name="charityId" id="dropdownCharity">
 
                                 <option value="0">Xin chọn tổ chức kêu gọi từ thiện</option>
@@ -84,7 +84,7 @@
                                     id="targetAmount"
                                     name="targetAmount"
                                     value="<c:out value="${project.targetAmount}"></c:out>"
-                                    <c:if test="${project.id != null}"><c:out value="disabled"></c:out></c:if>
+                                    <c:if test="${project.isAlreadyStarted()}"><c:out value="disabled"></c:out></c:if>
                             />
                         </div>
 
@@ -101,7 +101,7 @@
                                     id="startedDate"
                                     name="startedDate"
                                     value="<c:out value="${project.startedDate}"></c:out>"
-                                    <c:if test="${project.id != null}"><c:out value="disabled"></c:out></c:if>
+                                    <c:if test="${project.isAlreadyStarted()}"><c:out value="disabled"></c:out></c:if>
                             />
                         </div>
 
@@ -115,7 +115,7 @@
                                     id="expiredDate"
                                     name="expiredDate"
                                     value="<c:out value="${project.expiredDate}"></c:out>"
-                                    <c:if test="${project.id != null}"><c:out value="disabled"></c:out></c:if>
+                                    <c:if test="${project.isAlreadyStarted()}"><c:out value="disabled"></c:out></c:if>
                             />
                         </div>
                     </div>

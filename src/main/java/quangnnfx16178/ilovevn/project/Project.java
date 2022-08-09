@@ -55,11 +55,11 @@ public class Project {
     private Timestamp updatedTime;
 
     @Basic
-    @Column(name = "started_date", nullable = false, updatable = false)
+    @Column(name = "started_date", nullable = false, updatable = true)
     private Date startedDate;
 
     @Basic
-    @Column(name = "expired_date", nullable = false, updatable = false)
+    @Column(name = "expired_date", nullable = false, updatable = true)
     private Date expiredDate;
 
     @Basic

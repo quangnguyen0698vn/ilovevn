@@ -235,11 +235,14 @@ public class ProjectController {
         try {
             if (!flag) project = projectService.getProjectById(id);
             ProjectSaveHelper.setName(project, name);
-
-            if (flag) {
+//            log.info("dự án đã bắt đầu chưa? " + project.isAlreadyStarted());
+//            log.info(startedDate);
+            if (flag || !project.isAlreadyStarted()) {
+//                log.info("This block is stepped into");
                 ProjectSaveHelper.setCharity(project, charityService.getCharityById(charityId));
                 ProjectSaveHelper.setTargetAmount(project, targetAmount);
                 ProjectSaveHelper.setStartedDate(project, startedDate);
+//                log.info(project.getStartedDate());
                 ProjectSaveHelper.setExpiredDate(project, expiredDate);
             }
 
