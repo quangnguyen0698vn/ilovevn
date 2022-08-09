@@ -264,11 +264,15 @@ public class ProjectController {
             ProjectSaveUtil.deleteProjectImagesWereRemovedOnForm(persistedProject, realPath);
 
             if(flag) {
-                log.info("Tạo mới thành công dự án " + id);
+                log.info("Tạo mới thành công dự án " + persistedProject.getId());
+                ra.addFlashAttribute("success", true);
+                ra.addFlashAttribute("message", "Tạo mới thành công dự án " + persistedProject.getId());
             } else {
-                log.info("Chỉnh sửa thành công dự án " + id);
+                log.info("Chỉnh sửa thành công dự án " + persistedProject.getId());
+                ra.addFlashAttribute("success", true);
+                ra.addFlashAttribute("message", "Chỉnh sửa thành công dự án " + persistedProject.getId());
             }
-            return "redirect:/admin/projects/";
+            return defaultRedirectURL;
         } catch (ProjectNotFoundException e) {
             ra.addFlashAttribute("success", false);
             ra.addFlashAttribute("message", e.getMessage());
