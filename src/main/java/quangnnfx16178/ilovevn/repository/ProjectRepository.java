@@ -23,8 +23,8 @@ public interface ProjectRepository extends PagingAndSortingRepository<Project, I
      * Load hết dự án ra khỏi database, method này đã không được sử dụng nữa
      * @return danh sách dự án List<Project>
      */
-    @Query(value = "SELECT p FROM Project p")
-    List<Project> findAll();
+//    @Query(value = "SELECT p FROM Project p")
+//    List<Project> findAll();
 
 //    @Query(value = "SELECT p FROM Project p WHERE p.id=:id")
 //    Project findProjectById(@Param("id") Integer id);

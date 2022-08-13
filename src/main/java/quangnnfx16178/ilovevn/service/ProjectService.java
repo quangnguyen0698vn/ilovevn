@@ -73,7 +73,7 @@ public class ProjectService {
      * Load toàn bộ dự án ra khỏi database
      * @return
      */
-    public List<Project> listAll() {
+    public Iterable<Project> listAll() {
         return repo.findAll();
     }
 
