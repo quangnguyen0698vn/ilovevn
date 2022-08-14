@@ -27,7 +27,7 @@ public class UserService {
 
     Pageable pageable = PageRequest.of(pageNum - 1, pageSize, sort);
 
-    if (keyword != null) {
+    if (keyword != null || !keyword.equals("")) {
       return repo.findAll(keyword, pageable);
     }
 
