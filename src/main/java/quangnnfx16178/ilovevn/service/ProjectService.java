@@ -22,7 +22,7 @@ public class ProjectService {
     /**
      * Số lượng project được liệt kê ở một trang
      */
-    public final static Integer ITEMS_PER_PAGE = 4;
+    public final static Integer DEFAULT_ITEMS_PER_PAGE = 5;
 
     /**
      * Các trường có thể được sort ở menu sort and filter
@@ -110,8 +110,8 @@ public class ProjectService {
      */
     public Page<Project> listPage(Integer pageNum, String sortField, String sortDir) {
         Pageable page = sortDir.equals("asc")
-                ? PageRequest.of(pageNum-1, ITEMS_PER_PAGE, Sort.by(sortField).ascending())
-                : PageRequest.of(pageNum-1, ITEMS_PER_PAGE, Sort.by(sortField).descending());
+                ? PageRequest.of(pageNum-1, DEFAULT_ITEMS_PER_PAGE, Sort.by(sortField).ascending())
+                : PageRequest.of(pageNum-1, DEFAULT_ITEMS_PER_PAGE, Sort.by(sortField).descending());
         return repo.findAll(page);
     }
 
@@ -126,8 +126,8 @@ public class ProjectService {
      */
     public Page<Project> listPageByCharityId(Integer pageNum, String sortField, String sortDir, Integer charityId) {
         Pageable page = sortDir.equals("asc")
-                ? PageRequest.of(pageNum-1, ITEMS_PER_PAGE, Sort.by(sortField).ascending())
-                : PageRequest.of(pageNum-1, ITEMS_PER_PAGE, Sort.by(sortField).descending());
+                ? PageRequest.of(pageNum-1, DEFAULT_ITEMS_PER_PAGE, Sort.by(sortField).ascending())
+                : PageRequest.of(pageNum-1, DEFAULT_ITEMS_PER_PAGE, Sort.by(sortField).descending());
         return repo.findAllByCharityId(page, charityId);
     }
 
@@ -142,8 +142,8 @@ public class ProjectService {
      */
     public Page<Project> listPageWithNameContainsIgnoreCase(Integer pageNum, String sortField, String sortDir, String keyword) {
         Pageable page = sortDir.equals("asc")
-                ? PageRequest.of(pageNum-1, ITEMS_PER_PAGE, Sort.by(sortField).ascending())
-                : PageRequest.of(pageNum-1, ITEMS_PER_PAGE, Sort.by(sortField).descending());
+                ? PageRequest.of(pageNum-1, DEFAULT_ITEMS_PER_PAGE, Sort.by(sortField).ascending())
+                : PageRequest.of(pageNum-1, DEFAULT_ITEMS_PER_PAGE, Sort.by(sortField).descending());
         return repo.findAllWithNameContainsIgnoreCase(page, "%"+keyword+"%");
     }
 
@@ -159,8 +159,8 @@ public class ProjectService {
      */
     public Page<Project> listPageByCharityWithNameContainsIgnoreCase(Integer pageNum, String sortField, String sortDir, Integer charityId, String keyword) {
         Pageable page = sortDir.equals("asc")
-                ? PageRequest.of(pageNum-1, ITEMS_PER_PAGE, Sort.by(sortField).ascending())
-                : PageRequest.of(pageNum-1, ITEMS_PER_PAGE, Sort.by(sortField).descending());
+                ? PageRequest.of(pageNum-1, DEFAULT_ITEMS_PER_PAGE, Sort.by(sortField).ascending())
+                : PageRequest.of(pageNum-1, DEFAULT_ITEMS_PER_PAGE, Sort.by(sortField).descending());
         return repo.findAllByCharityIdWithNameContainsIgnoreCase(page, charityId, "%"+keyword+"%");
     }
 
