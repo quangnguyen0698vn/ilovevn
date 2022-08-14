@@ -59,9 +59,13 @@
       ajax: function(data, callback) {
         // data.length = 3;
         console.dir(data);
+        console.dir(data.columns[data.order[0].column].data);
+        console.dir(data.order[0].dir);
         $.get('http://localhost:8585/ilovevn/api/users', {
           pageSize: data.length,
           pageNum: (data.length + data.start) / data.length,
+          sortField: data.columns[data.order[0].column].data,
+          sortDir: data.order[0].dir
         } , function(res) {
           callback({
             recordsTotal: res.totalUsers,
