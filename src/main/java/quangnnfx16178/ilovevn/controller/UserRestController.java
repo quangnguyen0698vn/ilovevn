@@ -31,6 +31,12 @@ public class UserRestController {
     )
     {
         try {
+//            log.info("pageNum: " + pageNum);
+//            log.info("pageSize: " + pageSize);
+//            log.info("sortField: " + sortField);
+//            log.info("sortDir: " + sortDir);
+//            log.info("keyword: " + keyword);
+
             if (pageSize == -1)
                 pageSize = userService.countAll();
             Page<User> page = userService.listByPage(pageNum, pageSize, sortField, sortDir, keyword);

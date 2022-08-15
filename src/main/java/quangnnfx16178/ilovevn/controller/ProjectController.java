@@ -25,7 +25,7 @@ import java.util.List;
  * @Author Nguyễn Ngọc Quang
  */
 @Controller
-@RequestMapping({"/admin/projects", "/admin/projects/"})
+@RequestMapping("/admin/projects")
 @Log4j2
 @RequiredArgsConstructor
 public class ProjectController {

@@ -52,6 +52,9 @@ public class User {
     @JsonIgnore
     private String resetPasswordToken;
 
+    @Basic
+    @Column(name = "enabled")
+    private boolean enabled;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Donation> donations = new ArrayList<>();
