@@ -12,7 +12,7 @@ import quangnnfx16178.ilovevn.entity.User;
 @RequiredArgsConstructor
 @ComponentScan(basePackages = { "quangnnfx16178.ilovevn.config" })
 public class EmailServiceImpl implements EmailService {
-    private static final String NOREPLY_ADDRESS = "noreply@ilovevn.funix.edu.vn";
+//    private static final String NOREPLY_ADDRESS = "noreply@ilovevn.funix.edu.vn";
 
     private final JavaMailSender emailSender;
     private final SimpleMailMessage defaultPasswordTemplate;
@@ -22,7 +22,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendSimpleMessage(String to, String subject, String text) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom(NOREPLY_ADDRESS);
+//            message.setFrom(NOREPLY_ADDRESS);
             message.setTo(to);
             message.setSubject(subject);
             message.setText(text);

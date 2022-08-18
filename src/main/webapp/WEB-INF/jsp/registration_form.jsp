@@ -8,13 +8,14 @@
 <body>
     <span id="contextPath" style="display:none;"><c:out value="${pageContext.request.contextPath}"></c:out></span>
     <h3 class="text-center">Đăng ký tài khoản</h3>
-    <form action="
-            <c:url value="/users/create_new_user" context="${pageContext.request.contextPath}"></c:url>"
+    <form action="<c:url value="/users/create_new_user" context="${pageContext.request.contextPath}"></c:url>"
           method="post"
           style="max-width: 600px; margin: 0 auto"
           id="registrationForm"
     >
         <div class="border border-secondary rounded p-3">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
             <div class="form-group row mb-3">
                 <label class="col-sm-4 col-form-label">Họ và tên:</label>
                 <div class="col-sm-8">
@@ -84,10 +85,12 @@
                console.log('userEmail: ' + userEmail);
                const url = contextPath + "/api/users/check_unique_email";
 
-                // csrfValue = $("input[name='_csrf']").val();
-                // params = {email: userEmail, _csrf: csrfValue};
+                csrfValue = $("input[name='_csrf']").val();
+                params = {email: userEmail, _csrf: csrfValue};
 
-                const params = {email: userEmail}
+                console.log('csrfValue = ' + csrfValue);
+
+                // const params = {email: userEmail}
 
                 $.post(url, params, function (response) {
                     console.log('response 1: ' + response);
@@ -115,9 +118,9 @@
             }, function(value, element) {
                     let userEmail = $(element).val();
                     const url = contextPath + "/api/users/check_unique_email";
-                    // csrfValue = $("input[name='_csrf']").val();
-                    // params = {email: userEmail, _csrf: csrfValue};
-                    const params = {email: userEmail};
+                    csrfValue = $("input[name='_csrf']").val();
+                    params = {email: userEmail, _csrf: csrfValue};
+                    // const params = {email: userEmail};
                     $.post(url, params, function (response) {
                         console.log('response 2: ' + response);
                         if (response == "OK") {

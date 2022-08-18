@@ -25,7 +25,6 @@ import java.util.List;
  * @Author Nguyễn Ngọc Quang
  */
 @Controller
-@RequestMapping("/admin/projects")
 @Log4j2
 @RequiredArgsConstructor
 public class ProjectController {
@@ -47,7 +46,7 @@ public class ProjectController {
      */
     private final CharityService charityService;
 
-    @GetMapping({"", "/"})
+    @GetMapping("/admin/projects")
     public String listFirstPage(Model model) {
         return  defaultRedirectURL;
     }
@@ -62,7 +61,7 @@ public class ProjectController {
      * @param model object chứa các attribute cho views - tham khảo thêm tại https://www.baeldung.com/spring-mvc-model-model-map-model-view
      * @return đường dẫn đến file view jsp
      */
-    @GetMapping("/viewPage")
+    @GetMapping("/admin/viewPage")
     public String listByPage(@RequestParam(name="pageNum", required = true, defaultValue = "1") Integer pageNum,
                              @RequestParam(name="sortField", required = true, defaultValue = "id") String sortField,
                              @RequestParam(name="sortDir", required = true, defaultValue = "asc") String sortDir,
@@ -96,7 +95,7 @@ public class ProjectController {
         model.addAttribute("currentPage", pageNum);
         model.addAttribute("currentKeyword", keyword);
         model.addAttribute("totalPages", aPage.getTotalPages());
-        return "projects";
+        return "/admin/projects";
     }
 
 
@@ -105,7 +104,7 @@ public class ProjectController {
      * @param model object chứa các attribute cho views - tham khảo thêm tại https://www.baeldung.com/spring-mvc-model-model-map-model-view
      * @return đường dẫn đến file view jsp
      */
-    @GetMapping("/createForm")
+    @GetMapping("/admin/projects/create_new_project")
     public String createProjectForm(Model model) {
         List<Charity> charities = charityService.listAll();
         Project project = new Project();
@@ -124,7 +123,7 @@ public class ProjectController {
      * @return
      */
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/admin/projects/edit/{id}")
     public String editProject(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
         Project project = null;
         try {
@@ -154,7 +153,7 @@ public class ProjectController {
      * @param request object chứa các attribute của request
      * @return redirect đến trang quản lý dự án, thông báo nếu xóa thành công, xóa thất bại
      */
-    @GetMapping("/delete/{id}")
+    @GetMapping("/admin/projects/delete/{id}")
     public String deleteSingleProject(@PathVariable("id") Integer id, Model model, RedirectAttributes ra, HttpServletRequest request) {
         try {
             projectService.deleteProjectById(id);
@@ -179,7 +178,7 @@ public class ProjectController {
      * @param request object chứa các attribute của request
      * @return redirect đến trang quản lý dự án, thông báo nếu xóa thành công, xóa thất bại, ROLLBACK nếu có một dự án không xóa được, chỉ COMMIT khi tất cả đều được xóa
      */
-    @GetMapping("/delete/")
+    @GetMapping("/admin/projects/delete/")
     public String deleteMultipleProjects(@RequestParam(name = "id") List<Integer> ids, Model model, RedirectAttributes ra, HttpServletRequest request) {
         try {
             projectService.deleteProjectsByIds(ids);
@@ -214,7 +213,7 @@ public class ProjectController {
      * @return
      */
 
-    @PostMapping({"/save", "edit/save"})
+    @PostMapping({"/admin/projects/save", "/admin/projects/edit/save"})
     public String saveProject(
             @RequestParam(name = "id", required = false) Integer id,
             @RequestParam(name = "name") String name,

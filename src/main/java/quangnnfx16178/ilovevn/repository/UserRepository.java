@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import quangnnfx16178.ilovevn.entity.AuthenticationType;
 import quangnnfx16178.ilovevn.entity.User;
 
 public interface UserRepository extends PagingAndSortingRepository<User, Integer> {
@@ -23,4 +24,10 @@ public interface UserRepository extends PagingAndSortingRepository<User, Integer
 
     Integer countUserById(Integer id);
     Integer countUserByEmail(String email);
+
+    @Query("UPDATE User u SET u.authenticationType = ?2 WHERE u.id = ?1")
+    @Modifying
+    void updateAuthenticationType(Integer id, AuthenticationType type);
+
+    User findByEmail(String email);
 }

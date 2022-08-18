@@ -23,11 +23,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/users/create_new_user")
-    public String createNewUserForm() {
-        return "registration_form";
-    }
-
     @PostMapping("/users/create_new_user")
     public String createNewUserSumbit(@RequestParam String fullName,
                                       @RequestParam String email,
