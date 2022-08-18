@@ -1,5 +1,8 @@
 package quangnnfx16178.ilovevn.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,6 +28,7 @@ public class User {
     private String email;
     @Basic
     @Column(name = "password", nullable = false, length = 64)
+    @JsonIgnore
     private String password;
     @Basic
     @Column(name = "address", nullable = true, length = 200)
@@ -41,25 +45,25 @@ public class User {
     private String profilePhoto;
     @Basic
     @Column(name = "authentication_type", nullable = true, length = 10)
-    private String authenticationType;
+    @JsonIgnore
+    private AuthenticationType authenticationType;
     @Basic
     @Column(name = "reset_password_token", nullable = true, length = 30)
+    @JsonIgnore
     private String resetPasswordToken;
 
-    // BELOW IS ADDED MANUALLY BY QUANG
-
+    @Basic
+    @Column(name = "enabled")
+    private boolean enabled;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Donation> donations = new ArrayList<>();
-
 
     @Transient
     public String getProfilePhotoPath() {
         if (id == null || profilePhoto == null) return "/images/default-user.png";
         return "images/user-images/" + this.id + "/" + this.profilePhoto;
     }
-
-    // END OF QUANG'S CODE
-
 
     @Override
     public boolean equals(Object o) {

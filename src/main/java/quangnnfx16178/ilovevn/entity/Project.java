@@ -1,5 +1,9 @@
 package quangnnfx16178.ilovevn.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -80,6 +84,7 @@ public class Project {
      *  Tham khảo thêm tại https://www.baeldung.com/jpa-cascade-types
      */
     @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Set<ProjectImage> images = new HashSet<>();
 
     /**
@@ -88,6 +93,7 @@ public class Project {
      */
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     @OrderBy("id asc")
+    @JsonIgnore
     private List<Donation> donations = new ArrayList<>();
 
     /**

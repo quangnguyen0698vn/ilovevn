@@ -1,7 +1,7 @@
 package quangnnfx16178.ilovevn.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,8 +25,9 @@ import java.util.List;
  * @Author Nguyễn Ngọc Quang
  */
 @Controller
-@RequestMapping({"/admin/projects", "/admin/projects/"})
+@RequestMapping("/admin/projects")
 @Log4j2
+@RequiredArgsConstructor
 public class ProjectController {
 
     /**
@@ -38,14 +39,13 @@ public class ProjectController {
     /**
      * projectService được spring tự động khởi tạo và inject vào controller
      */
-    @Autowired
-    private ProjectService projectService;
+
+    private final ProjectService projectService;
 
     /**
      * charityService được spring tự động khởi tạo và inject vào controller
      */
-    @Autowired
-    private CharityService charityService;
+    private final CharityService charityService;
 
     @GetMapping({"", "/"})
     public String listFirstPage(Model model) {
@@ -96,7 +96,7 @@ public class ProjectController {
         model.addAttribute("currentPage", pageNum);
         model.addAttribute("currentKeyword", keyword);
         model.addAttribute("totalPages", aPage.getTotalPages());
-        return "/admin/project";
+        return "projects";
     }
 
 
