@@ -46,6 +46,7 @@ public class User {
     @Basic
     @Column(name = "authentication_type", nullable = true, length = 10)
     @JsonIgnore
+    @Enumerated(EnumType.STRING)
     private AuthenticationType authenticationType;
     @Basic
     @Column(name = "reset_password_token", nullable = true, length = 30)
@@ -62,7 +63,7 @@ public class User {
     @Transient
     public String getProfilePhotoPath() {
         if (id == null || profilePhoto == null) return "/images/default-user.png";
-        return "images/user-images/" + this.id + "/" + this.profilePhoto;
+        return "/images/user-images/" + this.id + "/" + this.profilePhoto;
     }
 
     @Override
@@ -101,5 +102,9 @@ public class User {
         result = 31 * result + (resetPasswordToken != null ? resetPasswordToken.hashCode() : 0);
         result = 31 * result + (donations != null ? donations.hashCode() : 0);
         return result;
+    }
+
+    public boolean hasRole(String roleName) {
+        return role.getName().equals(roleName);
     }
 }

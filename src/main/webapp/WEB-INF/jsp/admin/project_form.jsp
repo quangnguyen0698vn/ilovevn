@@ -13,7 +13,7 @@
 
 <body class="d-flex flex-column min-vh-100">
 <%-- Navbar--%>
-<jsp:include page="fragments/header.jsp"/>
+<jsp:include page="admin_header.jsp"/>
     <span id="contextPath" style="display:none;"><c:out value="${pageContext.request.contextPath}"></c:out></span>
     <section class="container">
         <h2 class="mb-5">
@@ -21,6 +21,7 @@
         </h2>
 
         <form method="post" action="save" enctype="multipart/form-data" id="mainForm" >
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
             <nav>
                 <div class="nav nav-tabs mb-4" role="tablist">
@@ -39,7 +40,7 @@
                     <div class="form-group row mt-4 mb-4">
                         <label class="col-lg-2 col-form-label" for="name">Tên dự án:</label>
                         <div class="col-lg-10">
-                            <input type="text" class="form-control" id="name" name="name" value="${project.name}" />
+                            <input <c:if test="${project.isAlreadyStarted()}"><c:out value="disabled"></c:out></c:if> type="text" class="form-control" id="name" name="name" value="${project.name}" />
                         </div>
                     </div>
 
@@ -245,7 +246,7 @@
     </section>
 
 <%--Footer--%>
-<jsp:include page="fragments/footer.jsp"/>
+<jsp:include page="admin_footer.jsp"/>
 
 <%-- js framework --%>
 <jsp:include page="../common/jsFramework.jsp"/>

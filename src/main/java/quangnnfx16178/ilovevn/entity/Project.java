@@ -12,9 +12,9 @@ import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Đây là class Project - entity này được mapping với bảng projects của cơ sở dữ liệu, lưu trữ thông tin của từng dự án như
@@ -42,6 +42,7 @@ public class Project {
     private String shortDescription;
     @Basic
     @Column(name = "full_description", nullable = false, length = 10000)
+    @JsonIgnore
     private String fullDescription;
     @Basic
     @Column(name = "main_image", nullable = true, length = 255)
@@ -49,18 +50,24 @@ public class Project {
     @Basic
     @Column(name = "created_time", nullable = true, updatable = false)
     @CreationTimestamp
-    private Timestamp createdTime;
+    @JsonIgnore
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdTime;
     @Basic
     @Column(name = "updated_time", nullable = true)
     @UpdateTimestamp
-    private Timestamp updatedTime;
+    @JsonIgnore
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedTime;
 
     @Basic
     @Column(name = "started_date", nullable = false, updatable = true)
+    @Temporal(TemporalType.DATE)
     private Date startedDate;
 
     @Basic
     @Column(name = "expired_date", nullable = false, updatable = true)
+    @Temporal(TemporalType.DATE)
     private Date expiredDate;
 
     @Basic
@@ -91,21 +98,31 @@ public class Project {
      * Mapping như dưới đây để lấy thông tin về những quyên góp cho dự án này
      * Hiện tại chưa cần sử dụng nhưng có thể tương lai sẽ cần
      */
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
     @OrderBy("id asc")
     @JsonIgnore
     private List<Donation> donations = new ArrayList<>();
+
+    public int getNumberOfDonations() {
+        return donations.size();
+    }
 
     /**
      * So sánh ngày bắt đầu thực hiên quyên góp với ngày hôm nay
      * @return true nếu dự án đã bắt đầu quyên góp, false nếu dự án chưa được bắt đầu
      */
 
+    public Long getNumberOfDaysLeft() {
+        if (this.startedDate == null || this.expiredDate == null) return -1L;
+        long diffInMillies = Math.abs(this.expiredDate.getTime() - this.startedDate.getTime());
+        long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+        return diff;
+    }
+
     public boolean isAlreadyStarted() {
         if (this.startedDate == null) return false;
         java.util.Date date = new java.util.Date();
-        java.sql.Date sqlDate = new Date(date.getTime());
-        int compare = sqlDate.compareTo(this.startedDate);
+        int compare = date.compareTo(this.startedDate);
         return compare >= 0;
     }
 

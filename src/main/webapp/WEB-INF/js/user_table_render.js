@@ -32,7 +32,7 @@ $.fn.dataTable.pipeline = function (opts) {
         var requestLength = request.length;
         var requestEnd = requestStart + requestLength;
 
-        debug('request at line 109', request);
+        // debug('request at line 109', request);
         // // debug('drawCallback', drawCallback);
         // // debug('settings', settings);
         // debug('requestStart', requestStart);
@@ -111,7 +111,7 @@ $.fn.dataTable.pipeline = function (opts) {
                         // debug('json at line 179: ', json);
                     }
 
-                    debug('json at line 188: ', json);
+                    // debug('json at line 188: ', json);
                     drawCallback(json);
                 }
             });
@@ -136,6 +136,7 @@ $.fn.dataTable.Api.register('clearPipeline()', function () {
 
 $(document).ready( function() {
     $("#table_less_ajax_calls").DataTable({
+        responsive: true,
         process: true,
         search: {
             return: true, //false ~ instant search ~ more ajaxs than true
@@ -173,9 +174,17 @@ $(document).ready( function() {
 
         columnDefs: [
             {
+                targets: 5,
+                "render": function ( data, type, row, meta ) {
+                    const text = data.substring(5);
+                    return text;
+                }
+            },
+
+            {
                 targets: 6,
                 "render": function ( data, type, row, meta ) {
-                    const imgSource = prefix + '/' + data;
+                    const imgSource = prefix + data;
                     return '<img class="img-fluid" src="' + imgSource + '"/>';
                 }
             },
@@ -186,7 +195,7 @@ $(document).ready( function() {
                     // debug('type = ', type);
                     // debug('row = ', row);
                     // debug('meta = ', meta);
-                    console.log(data + ' is a ' + typeof data);
+                    // console.log(data + ' is a ' + typeof data);
                     const url = prefix + '/admin/users/' + row['id'] + '/enabled/' + !data;
 
                     if (data) {
@@ -199,11 +208,11 @@ $(document).ready( function() {
             {
                 targets: 8,
                 "render": function ( data, type, row, meta ) {
-                    debug('data = ', data);
+                    // debug('data = ', data);
                     // debug('type = ', type);
                     // debug('row = ', row);
                     // debug('meta = ', meta);
-                    console.log(data + ' is a ' + typeof data);
+                    // console.log(data + ' is a ' + typeof data);
                     const urlEdit = prefix + '/admin/users/edit/' + row['id'];
                     const urlDelete = prefix + '/admin/users/delete/' + row['id'];
                     let result =
@@ -228,7 +237,7 @@ $(document).ready( function() {
                  
                       `;
 
-            debug('result at line 288: ', result);
+            // debug('result at line 288: ', result);
             return result;
 
           }
@@ -241,14 +250,14 @@ $(document).ready( function() {
     });
 
     $('#table_less_ajax_calls').on( 'draw.dt', function () {
-        console.log('table is loaded succesfully');
+        // console.log('table is loaded succesfully');
         $('.link-delete').on('click', function(e) {
 
             e.preventDefault();
             // debug('id: ', $(this).attr('data-user-id'));
             // debug('id: ', this.attributes['data-user-id'].value);
             const userRole = $(this).attr('data-user-role');
-            debug('userRole = ', userRole);
+            // debug('userRole = ', userRole);
             if (userRole === 'ADMIN') {
                 alert('Không thể xóa tài khoản ADMIN');
                 return;

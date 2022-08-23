@@ -1,13 +1,19 @@
 package quangnnfx16178.ilovevn.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "charities")
+@Getter
+@Setter
 public class Charity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -18,63 +24,26 @@ public class Charity {
     private String name;
     @Basic
     @Column(name = "short_description", nullable = true, length = 512)
+//    @JsonIgnore
     private String shortDescription;
     @Basic
     @Column(name = "full_description", nullable = true, length = 4096)
+    @JsonIgnore
     private String fullDescription;
     @Basic
     @Column(name = "logo", nullable = false, length = 255)
     private String logo;
 
+    @Formula("length(full_description) > 0")
+    private Boolean havingDetails;
     // BELOW IS ADDED MANUALLY BY QUANG
 
     @Transient
     public String getCharityLogoPath() {
         if (id == null || logo == null) return "/images/default-charity.png";
-        return "images/charity-images/" + this.id + "/" + this.logo;
+        return "/images/charity-images/" + this.id + "/" + this.logo;
     }
 
-    // END OF QUANG'S CODE
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getShortDescription() {
-        return shortDescription;
-    }
-
-    public void setShortDescription(String shortDescription) {
-        this.shortDescription = shortDescription;
-    }
-
-    public String getFullDescription() {
-        return fullDescription;
-    }
-
-    public void setFullDescription(String fullDescription) {
-        this.fullDescription = fullDescription;
-    }
-
-    public String getLogo() {
-        return logo;
-    }
-
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -42,6 +42,18 @@
 .link-delete {
 	color: gray;
 }
+.circle {
+	border-radius: 100%;
+	display: block;
+	width: 5.0rem;
+	height: 5.0rem;
+	overflow: hidden;
+}
+
+.circle img {
+	width: 4.0rem;
+	height: 4.0rem;
+}
 
 .link-edit {
 	color: green;
@@ -62,4 +74,78 @@
 
 .checkbox-column {
 	display: none;
+}
+
+.rounded-full {
+	border-radius: 9999px;
+}
+
+.span-charity {
+	box-sizing:border-box;
+	display:block;
+	overflow:hidden;
+	width:initial;
+	height:initial;
+	background:none;
+	opacity:1;
+	border:0;
+	margin:0;
+	padding:0;
+	position:absolute;
+	top:0;
+	left:0;
+	bottom:0;
+	right:0
+}
+
+.img-charity {
+	position:absolute;
+	top:0;
+	left:0;
+	bottom:0;
+	right:0;
+	box-sizing:border-box;
+	padding:0;
+	border:none;
+	margin:auto;
+	display:block;
+	width: 50px;
+	height: 50px;
+	min-width:100%;
+	max-width:100%;
+	min-height:100%;
+
+	max-height:100%;
+	object-fit:contain
+}
+
+.text-xs {
+	font-size: 0.75rem; /* 12px */
+	line-height: 1rem; /* 16px */
+}
+
+.card-img-top {
+	border-radius: 1em;
+}
+
+.card {
+	/*padding: 1.5em .5em .5em;*/
+	border-radius: 1em;
+	box-shadow: 0 5px 10px rgba(0,0,0,.2);
+
+	transition: all 200ms;
+}
+
+.card:hover {
+	transform: translateY(-0.6rem);
+	/*box-shadow: 0 3.2rem 6.4rem rgba(0,0,0,0.05);*/
+	box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}
+
+.btn-register, .btn-login {
+	border: none!important;
+}
+
+.navbar-nav .nav-item .nav-link {
+	/*color: lawngreen;*/
 }

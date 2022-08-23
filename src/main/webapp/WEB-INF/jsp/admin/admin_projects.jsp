@@ -16,7 +16,7 @@
 
 <body class="d-flex flex-column min-vh-100">
 <%-- Navbar--%>
-<jsp:include page="fragments/header.jsp"/>
+<jsp:include page="admin_header.jsp"/>
 
 <jsp:include page="fragments/project_filter_and_search.jsp"/>
 
@@ -41,7 +41,7 @@
 
 
 <%--Footer--%>
-<jsp:include page="fragments/footer.jsp"/>
+<jsp:include page="admin_footer.jsp"/>
 
 <%-- js framework --%>
 <jsp:include page="../common/jsFramework.jsp"/>
@@ -76,7 +76,7 @@
     function deleteProject(id, name) {
         console.log(id);
         if (confirm(`Bạn có muốn xóa dự án số ` + id + `: ` + name + ` không? Thao tác này sẽ không thể hoàn tác!`)) {
-            let link = "<c:url value="/admin/projects/delete/" context="${pageContext.request.contextPath}"></c:url>" + id;
+            let link = "<c:url value="/admin/projects/delete/admin_projects.jsp" context="${pageContext.request.contextPath}"></c:url>" + id;
             // console.log(window.location.pathname);
             // console.log(link);
             // console.log(window.location.origin);

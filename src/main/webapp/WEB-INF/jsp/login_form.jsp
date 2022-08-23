@@ -5,9 +5,13 @@
     <title>Title</title>
     <jsp:include page="common/cssFramework.jsp"></jsp:include>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <span id="contextPath" style="display:none;"><c:out value="${pageContext.request.contextPath}"></c:out></span>
+
+    <jsp:include page="header.jsp"/>
+
     <h3 class="text-center">Đăng nhập vào hệ thống</h3>
+    <div class="container mt-4">
     <form action="<c:url value="/login" context="${pageContext.request.contextPath}"></c:url>"
           method="post"
           style="max-width: 600px; margin: 0 auto"
@@ -15,12 +19,18 @@
     >
         <div class="border border-secondary rounded p-3">
             <p>Mời bạn nhập thông tin đăng nhập</p>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p>
                 <input type="email" name="email" class="form-control" placeholder="E-mail">
             </p>
             <p>
                 <input type="password" name="password" class="form-control" placeholder="Password">
             </p>
+            <c:if test="${error}">
+                <p class="text-danger">
+                    <c:out value="${message}"></c:out>
+                </p>
+            </c:if>
             <p>
                 <input type="checkbox" name="remember-me">&nbsp;Remember Me
             </p>
@@ -29,6 +39,8 @@
             </p>
         </div>
     </form>
+    </div>
+    <jsp:include page="footer.jsp"/>
 
 
     <jsp:include page="common/jsFramework.jsp"></jsp:include>

@@ -22,7 +22,7 @@ public class ProjectService {
     /**
      * Số lượng project được liệt kê ở một trang
      */
-    public final static Integer DEFAULT_ITEMS_PER_PAGE = 5;
+    public final static Integer DEFAULT_ITEMS_PER_PAGE = 6;
 
     /**
      * Các trường có thể được sort ở menu sort and filter
@@ -199,5 +199,19 @@ public class ProjectService {
         for(Integer id : ids) {
             deleteProjectById(id);
         }
+    }
+
+    public Iterable<Project> listAllStartedProjects() {
+        return repo.findAllByStartedDateLessThanEqual(new Date());
+    }
+
+    public Iterable<Project> listPageStartedProjects(Integer pageNum) {
+        Pageable page = PageRequest.of(pageNum-1, DEFAULT_ITEMS_PER_PAGE, Sort.by("startedDate").descending());
+        Page aPage = repo.findAllByStartedDateLessThanEqual(page, new Date());
+        return aPage.getContent();
+    }
+
+    public Integer countAllStartedProjects() {
+        return repo.countAllByStartedDateLessThanEqual(new Date());
     }
 }

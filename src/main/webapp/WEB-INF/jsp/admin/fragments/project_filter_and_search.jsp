@@ -11,7 +11,7 @@
   </c:if>
 
   <a href="
-       ${pageContext.request.contextPath}/admin/projects/createForm
+       ${pageContext.request.contextPath}/admin/projects/create_new_project
     " class="btn btn-primary m-3">Thêm Dự Án</a>
 
   <a href="#" id="bulk-selector-enable" class="btn btn-warning m-3">Chọn nhiều dự án</a>

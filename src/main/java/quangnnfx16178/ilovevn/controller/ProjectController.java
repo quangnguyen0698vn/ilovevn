@@ -46,6 +46,19 @@ public class ProjectController {
      */
     private final CharityService charityService;
 
+    @GetMapping("/view/project")
+    public String viewProject(@RequestParam("id")Integer id, Model model) {
+        try {
+            Project project = projectService.getProjectById(id);
+            model.addAttribute("project", project);
+        } catch (ProjectNotFoundException e) {
+            model.addAttribute("success", false);
+            model.addAttribute("message", e.getMessage());
+            log.error(e.getMessage());
+        }
+        return "project_detail";
+    }
+
     @GetMapping("/admin/projects")
     public String listFirstPage(Model model) {
         return  defaultRedirectURL;
@@ -61,7 +74,7 @@ public class ProjectController {
      * @param model object chứa các attribute cho views - tham khảo thêm tại https://www.baeldung.com/spring-mvc-model-model-map-model-view
      * @return đường dẫn đến file view jsp
      */
-    @GetMapping("/admin/viewPage")
+    @GetMapping("/admin/projects/viewPage")
     public String listByPage(@RequestParam(name="pageNum", required = true, defaultValue = "1") Integer pageNum,
                              @RequestParam(name="sortField", required = true, defaultValue = "id") String sortField,
                              @RequestParam(name="sortDir", required = true, defaultValue = "asc") String sortDir,
@@ -95,7 +108,7 @@ public class ProjectController {
         model.addAttribute("currentPage", pageNum);
         model.addAttribute("currentKeyword", keyword);
         model.addAttribute("totalPages", aPage.getTotalPages());
-        return "/admin/projects";
+        return "admin/admin_projects";
     }
 
 
@@ -216,7 +229,7 @@ public class ProjectController {
     @PostMapping({"/admin/projects/save", "/admin/projects/edit/save"})
     public String saveProject(
             @RequestParam(name = "id", required = false) Integer id,
-            @RequestParam(name = "name") String name,
+            @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "charityId", required = false) Integer charityId,
             @RequestParam(name = "targetAmount", required = false) Long targetAmount,
             @RequestParam(name = "startedDate", required = false) Date startedDate,
@@ -236,11 +249,11 @@ public class ProjectController {
 
         try {
             if (!flag) project = projectService.getProjectById(id);
-            ProjectSaveUtil.setName(project, name);
 //            log.info("dự án đã bắt đầu chưa? " + project.isAlreadyStarted());
 //            log.info(startedDate);
             if (flag || !project.isAlreadyStarted()) {
 //                log.info("This block is stepped into");
+                ProjectSaveUtil.setName(project, name);
                 ProjectSaveUtil.setCharity(project, charityService.getCharityById(charityId));
                 ProjectSaveUtil.setTargetAmount(project, targetAmount);
                 ProjectSaveUtil.setStartedDate(project, startedDate);

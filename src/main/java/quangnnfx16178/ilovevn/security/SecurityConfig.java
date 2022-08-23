@@ -5,7 +5,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,53 +28,39 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
     private final DatabaseLoginSuccessHandler databaseLoginHandler;
-
-    private final PasswordEncoder passwordEncoder;
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new MyUserDetailsService();
-    }
-
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
-        authProvider.setUserDetailsService(userDetailsService());
-        authProvider.setPasswordEncoder(passwordEncoder);
-
-        return authProvider;
-    }
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((authz) -> {
-                            try {
-                                authz
-                                        .antMatchers(
-                                                "/register",
-                                                "/api/users/check_unique_email/**   ",
-                                                "/js/**",
-                                                "/css/**",
-                                                "/images/**").permitAll()
-                                        .antMatchers("/admin/*").hasRole("ADMIN")
-                                        .and()
-                                        .formLogin()
-                                            .loginPage("/login")
-                                            .usernameParameter("email")
-                                            .successHandler(databaseLoginHandler)
-                                            .permitAll()
-                                        .and().logout().permitAll();
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                )
+//                .csrf()
+//                .disable()
+                .authorizeRequests()
+                .antMatchers("/", "/charity", "/aboutus").permitAll()
+                .antMatchers( "/register",
+                        "/users/create_new_user",
+                        "/api/users/check_unique_email/**",
+                        "/api/projects/**",
+                        "/api/charities/**",
+                        "/js/**",
+                        "/css/**",
+                        "/images/**")
+                .permitAll()
+                .mvcMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                    .loginPage("/login")
+                    .usernameParameter("email")
+                    .failureHandler(customAuthenticationFailureHandler)
+//                    .failureUrl("/login?error=true")
+                    .successHandler(databaseLoginHandler)
+                    .permitAll()
+                .and().logout().logoutSuccessUrl("/").invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID").permitAll()
+                .and()
                 .httpBasic(withDefaults());
         return http.build();
     }
-
 }

@@ -2,12 +2,16 @@ package quangnnfx16178.ilovevn.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "roles")
+@Getter
+@Setter
 public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -20,28 +24,9 @@ public class Role {
     @Column(name = "description", nullable = false, length = 150)
     private String description;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    @Transient
+    public String getRoleName() {
+        return this.name.substring(5);
     }
 
     @Override

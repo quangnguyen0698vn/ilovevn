@@ -20,7 +20,7 @@
 <%--<span id="contextPath2" style="display:none;"><c:out value="${pageContext.request.requestURI}"></c:out></span>--%>
 
 <%-- Navbar--%>
-<jsp:include page="fragments/header.jsp"/>
+<jsp:include page="admin_header.jsp"/>
 
 <%--<div class="container">--%>
 <%--  <table id="table_many_ajax_calls" class="display d-none">--%>
@@ -39,16 +39,33 @@
 
 <div style="width: 95%;" class="mx-auto">
 
-  <c:forEach items="${message}" varStatus="status">
+  <c:if test="${success0 != null}">
     <h4 class="mb-1
-      <c:if test="${success[status.index]}">text-success</c:if>
-      <c:if test="${!success[status.index]}">text-danger</c:if>
-    ">
-    <c:out value="${message[status.index]}"></c:out>
+    <c:if test="${success0}">text-success</c:if>
+    <c:if test="${!success0}">text-danger</c:if>
+  ">
+      <c:out value="${message0}"></c:out>
     </h4>
-  </c:forEach>
+  </c:if>
 
-  <table id="table_less_ajax_calls" class="display mt-5 table table-bordered table-striped table-hover table-responsive-xl">
+
+  <h4 class="mb-1
+      <c:if test="${success}">text-success</c:if>
+      <c:if test="${!success}">text-danger</c:if>
+    ">
+    <c:out value="${message}"></c:out>
+  </h4>
+
+
+  <a class="btn btn-primary mb-4"
+     href="<c:url value="/admin/users/create_new_user" context="${pageContext.request.contextPath}"></c:url>"
+     >Thêm tài khoản
+  </a>
+
+  <table id="table_less_ajax_calls"
+         class="display mt-5 table table-bordered table-striped table-hover table-responsive-xl"
+         style="width:100%"
+  >
     <thead class="bg-dark text-white">
     <tr>
       <th>Mã số</th>
@@ -66,7 +83,7 @@
 
 
 <%--Footer--%>
-<jsp:include page="fragments/footer.jsp"/>
+<jsp:include page="admin_footer.jsp"/>
 
 
 <%-- js framework --%>

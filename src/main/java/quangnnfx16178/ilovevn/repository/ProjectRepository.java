@@ -65,4 +65,11 @@ public interface ProjectRepository extends PagingAndSortingRepository<Project, I
 
     Integer countById(Integer id);
 
+    List<Project> findAllByStartedDateLessThanEqual(java.util.Date date);
+
+    @Query(value = "SELECT p FROM Project p WHERE p.startedDate <= :date")
+    Page<Project> findAllByStartedDateLessThanEqual(Pageable page, java.util.Date date);
+
+    @Query(value = "SELECT count(p) FROM Project p WHERE p.startedDate <= :date")
+    Integer countAllByStartedDateLessThanEqual(java.util.Date date);
 }

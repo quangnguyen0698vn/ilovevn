@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping({"/rest/"})
+@RequestMapping({"/api/"})
 @Log4j2
 @RequiredArgsConstructor
 public class ProjectRestController {
@@ -24,19 +24,21 @@ public class ProjectRestController {
     @RequestMapping(value = "/projects", method = RequestMethod.GET)
     Iterable<Project> getProjects() {
 
-        Iterable<Project> projects = projectService.listAll();
+        Iterable<Project> projects = projectService.listAllStartedProjects();
 //        for (Project project : projects)
 //            log.info(project.getId() + " " + project.getName());
         return projects;
     }
 
-    @GetMapping("/{id}")
-    Project getProjectById(@PathVariable String id) {
-        try {
-            return projectService.getProjectById(Integer.parseInt(id));
-        } catch (ProjectNotFoundException e) {
-            log.error(e.getMessage());
-        }
-        return null;
+    @GetMapping(value = "/projects/page/{pageNum}")
+    Iterable<Project> listPage(@PathVariable("pageNum") Integer pageNum) {
+        Iterable<Project> projects = projectService.listPageStartedProjects(pageNum);
+        return projects;
     }
+
+    @GetMapping(value = "projects/size")
+    Integer numberOfProjects() {
+        return projectService.countAllStartedProjects();
+    }
+
 }
