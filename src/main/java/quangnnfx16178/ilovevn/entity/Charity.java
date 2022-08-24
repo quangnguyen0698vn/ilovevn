@@ -34,6 +34,10 @@ public class Charity {
     @Column(name = "logo", nullable = false, length = 255)
     private String logo;
 
+    @Basic
+    @Column(name = "account_number")
+    private String accountNumber;
+
     @Formula("length(full_description) > 0")
     private Boolean havingDetails;
     // BELOW IS ADDED MANUALLY BY QUANG

@@ -8,4 +8,6 @@ public interface EmailService {
                            String text);
 
     void sendDefaultPasswordToNewUser(User user, String password);
+
+    void sendResetTokenEmail(User user, String token);
 }

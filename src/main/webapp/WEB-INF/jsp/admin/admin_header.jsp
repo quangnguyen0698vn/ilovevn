@@ -4,7 +4,7 @@
 <c:set var="theUri" value="${requestScope['javax.servlet.forward.request_uri']}"></c:set>
 <header class="bg-dark mb-5">
   <nav class="container navbar navbar-expand-lg bg-dark navbar-dark">
-    <a href="#" class="navbar-brand">
+    <a href="<c:url value="/" context="${pageContext.request.contextPath}"></c:url>" class="navbar-brand">
       <img src="<c:url value="/images/ilovevn-small.png" context="${pageContext.request.contextPath}"></c:url>" alt="Website's logo" />
     </a>
 
@@ -52,7 +52,7 @@
         <sec:authorize access="isAuthenticated()">
           <li class= "nav-item dropdown p-1">
             <a type="button" class="dropdown-toggle text-success" id="dropdownButton" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="${pageContext.request.contextPath}<sec:authentication property="principal.user.profilePhotoPath" />" class="rounded-circle"
+              <img src="${pageContext.request.contextPath}<sec:authentication property="principal.profilePhotoPath" />" class="rounded-circle"
                    height="50" alt="Avatar" loading="lazy" />
             </a>
             <sec:authentication property="principal.fullName"/>

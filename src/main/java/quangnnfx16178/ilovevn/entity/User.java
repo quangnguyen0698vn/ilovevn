@@ -54,6 +54,22 @@ public class User {
     private String resetPasswordToken;
 
     @Basic
+    @Column(name = "reset_password_request_time")
+    @JsonIgnore
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date resetPasswordRequestTime;
+
+    @Basic
+    @Column(name = "reset_password_session_id")
+    @JsonIgnore
+    private String resetPasswordSessionId;
+
+    @Basic
+    @Column(name = "reset_password_attempt")
+    @JsonIgnore
+    private Integer resetPasswordAttempt = 0;
+
+    @Basic
     @Column(name = "enabled")
     private boolean enabled;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -64,6 +80,14 @@ public class User {
     public String getProfilePhotoPath() {
         if (id == null || profilePhoto == null) return "/images/default-user.png";
         return "/images/user-images/" + this.id + "/" + this.profilePhoto;
+    }
+
+    @JsonIgnore
+    public boolean isTokenExpired() {
+        Long currentTimeInMillis = System.currentTimeMillis();
+        Long requestTokenTimeInMillis = resetPasswordRequestTime.getTime();
+        final Long TOKEN_VALID_DURATION = Long.valueOf(3 * 60 * 1000);   // 3 minutes
+        return  (requestTokenTimeInMillis + TOKEN_VALID_DURATION < currentTimeInMillis);
     }
 
     @Override
@@ -107,4 +131,6 @@ public class User {
     public boolean hasRole(String roleName) {
         return role.getName().equals(roleName);
     }
+
+
 }

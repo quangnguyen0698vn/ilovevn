@@ -27,10 +27,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String password = authentication.getCredentials().toString();
 
         MyUserDetails user = (MyUserDetails) userDetailsService.loadUserByUsername(username);
-        log.info("Lấy thử fullName: " + user.getFullName());
         if (user.isEnabled() && passwordEncoder.matches(password, user.getPassword())) {
             return new UsernamePasswordAuthenticationToken(
-                    new UserDTO(user.getUser()),
+                    user,
                     password,
                     user.getAuthorities());
         }

@@ -3,6 +3,7 @@ package quangnnfx16178.ilovevn.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import quangnnfx16178.ilovevn.entity.Project;
@@ -72,4 +73,8 @@ public interface ProjectRepository extends PagingAndSortingRepository<Project, I
 
     @Query(value = "SELECT count(p) FROM Project p WHERE p.startedDate <= :date")
     Integer countAllByStartedDateLessThanEqual(java.util.Date date);
+
+    @Modifying
+    @Query("update Project p set p.raisedAmount = p.raisedAmount + :amount where p.id = :id")
+    void increaseRaisedAmount(Integer id, Long amount);
 }

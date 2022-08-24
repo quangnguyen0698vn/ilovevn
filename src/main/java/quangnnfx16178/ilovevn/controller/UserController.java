@@ -3,6 +3,7 @@ package quangnnfx16178.ilovevn.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,6 +33,132 @@ public class UserController {
 
     private final UserService userService;
     private final RoleService roleService;
+
+
+    @PostMapping("/resetPassword")
+    public String resetPassword(@RequestParam("token") String token,
+                                @RequestParam("password") String password,
+                                @RequestParam("repeatedPassword") String repeatedPassword,
+                                Model model, HttpServletRequest request) {
+
+        // assume that password & repeatedPassword is the same (checked by js)
+
+        User user = null;
+
+        try {
+            user = userService.getByResetToken(token);
+            if (user.isTokenExpired()) {
+                model.addAttribute("error", true);
+                model.addAttribute("errorMessage", "Token đã hết hạn sử dụng!");
+                model.addAttribute("sendEmail", false);
+                return "forgot_password_form";
+            }
+
+            String sessionId = request.getSession().getId();
+            if (!sessionId.equals(user.getResetPasswordSessionId())) {
+                model.addAttribute("error", true);
+                model.addAttribute("errorMessage", "Session không khớp!");
+                model.addAttribute("sendEmail", false);
+                return "forgot_password_form";
+            }
+
+            userService.saveResetPassword(user, password);
+
+            model.addAttribute("resetPasswordSuccess", true);
+            model.addAttribute("resetPasswordSuccessMessage", "Tài khoản " + user.getEmail() + " đã thay đổi mật khẩu thành công");
+            model.addAttribute("resetPasswordEmail", user.getEmail());
+            return "login_form";
+        } catch (UserNotFoundException e) {
+            model.addAttribute("error", true);
+            model.addAttribute("errorMessage", "Token không đúng!");
+            model.addAttribute("sendEmail", false);
+            return "/resetPasswordForm";
+        }
+
+    }
+
+    @PostMapping("/resetPasswordForm")
+    public String showResetPasswordForm(HttpServletRequest request, Model model, @RequestParam("resetToken") String token,
+                                        @RequestParam("email") String email) {
+        String text = "Quên mật khẩu";
+        model.addAttribute("title", text);
+
+        // check by session id first
+
+        User userBySessionId = null;
+
+        try {
+            userBySessionId = userService.getBySessionId(request.getSession().getId());
+            userBySessionId.setResetPasswordAttempt(userBySessionId.getResetPasswordAttempt() + 1);
+            userService.saveUser(userBySessionId);
+        } catch (UserNotFoundException e) {
+            model.addAttribute("error", true);
+            model.addAttribute("errorMessage", "Lỗi Session không khớp! Bạn hãy điền lại form bên dưới để thử lại");
+            model.addAttribute("sendEmail", false);
+            return "forgot_password_form";
+        }
+
+        User user = null;
+        try {
+            user = userService.getByResetToken(token);
+
+            if (user.isTokenExpired()) {
+                model.addAttribute("error", true);
+                model.addAttribute("errorMessage", "Token đã hết hạn sử dụng!");
+                model.addAttribute("sendEmail", false);
+                return "forgot_password_form";
+            }
+
+            String sessionId = request.getSession().getId();
+            if (!sessionId.equals(user.getResetPasswordSessionId())) {
+                model.addAttribute("error", true);
+                model.addAttribute("errorMessage", "Session không khớp!");
+                model.addAttribute("sendEmail", false);
+                return "forgot_password_form";
+            }
+
+            model.addAttribute("token", token);
+            model.addAttribute("user", new UserDTO(user));
+            return "reset_password_form";
+        } catch (UserNotFoundException e) {
+
+            if (userBySessionId.getResetPasswordAttempt() >= 3) {
+                userService.clearForgotPasswordRequest(userBySessionId);
+                model.addAttribute("error", true);
+                model.addAttribute("errorMessage", "Bạn đã nhập sai token quá 3 lần!\nHệ thống đã hủy yêu cầu thay đổi mật khẩu của bạn!");
+                model.addAttribute("sendEmail", false);
+                return "forgot_password_form";
+            }
+
+            model.addAttribute("error", true);
+            model.addAttribute("errorMessage", "Token không đúng!\n" +
+                    "Vui lòng thử lại để khôi phục mật khẩu cho tài khoẳn với email: " + email);
+            model.addAttribute("sendEmail", true);
+            model.addAttribute("email", email);
+            return "forgot_password_form";
+        }
+    }
+
+    @PostMapping("/forgotPassword")
+    public String forgotPasswordProcess(Model model, HttpServletRequest request, @RequestParam("email") String email) {
+        String text = "Quên mật khẩu";
+        model.addAttribute("title", text);
+        model.addAttribute("email", email);
+        String token = RandomString.make(30);
+        try {
+            userService.updateResetToken(email, token, request.getSession().getId());
+            model.addAttribute("sendEmail", true);
+            model.addAttribute("emailNotFound", false);
+            model.addAttribute("sendEmailMessage", "Chúng tôi đã gửi mã token đến email: " + email);
+
+        } catch (UserNotFoundException e) {
+            model.addAttribute("sendEmail", false);
+            model.addAttribute("emailNotFound", true);
+            model.addAttribute("emailNotFoundMessage", "Không tồn tại email này trong hệ thống!");
+            return "forgot_password_form";
+        }
+        return "forgot_password_form";
+    }
 
     @GetMapping("/admin/users/create_new_user")
     public String createUser(Model model) {

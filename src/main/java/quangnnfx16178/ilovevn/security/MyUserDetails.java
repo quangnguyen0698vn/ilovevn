@@ -65,6 +65,11 @@ public class MyUserDetails implements UserDetails {
     public String getFullName() {
         return this.user.getFullName();
     }
+
+    public String getProfilePhotoPath() {
+        return this.user.getProfilePhotoPath();
+    }
+
     public boolean hasRole(String roleName) {
         return user.hasRole(roleName);
     }

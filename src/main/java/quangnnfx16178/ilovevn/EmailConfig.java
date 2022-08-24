@@ -51,7 +51,7 @@ public class EmailConfig {
         return mailSender;
     }
 
-    @Bean
+    @Bean(name = "defaultPasswordEmailMessage")
     public SimpleMailMessage notifyDefaultPasswordMessage() {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setText(
@@ -65,5 +65,18 @@ public class EmailConfig {
         return message;
     }
 
-
+    @Bean(name = "resetPasswordTokenMessage")
+    public SimpleMailMessage notifyResetPasswordTokenMessage() {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setText(
+                "Xin chào bạn %s\n" +
+                        "Hệ thống ghi nhận bạn đang thực hiện tính năng Forgot Password!\n" +
+                        "Để tiếp tục lấy lại mật khẩu, bạn cần sử dụng token dưới đây\n" +
+                        "- Token: %s\n" +
+                                "Token sẽ hết hạn sau 10 phút\n" +
+                        "Nếu bạn không hề sử dụng tính năng thay đổi mật khẩu, hãy bỏ qua email này!\n" +
+                                "Trân trọng cảm ơn!"
+        );
+        return message;
+    }
 }

@@ -20,6 +20,7 @@ import quangnnfx16178.ilovevn.util.FileUploadUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -171,4 +172,48 @@ public class UserService {
     userRepository.save(user);
   }
 
+    public void updateResetToken(String email, String token, String sessionId) throws UserNotFoundException {
+      User user = getByEmail(email);
+      user.setResetPasswordToken(token);
+      user.setResetPasswordSessionId(sessionId);
+      user.setResetPasswordRequestTime(new Date());
+      user.setResetPasswordAttempt(0);
+      userRepository.save(user);
+      emailService.sendResetTokenEmail(user, token);
+    }
+
+  public User getByResetToken(String token) throws UserNotFoundException {
+    Integer count = userRepository.countUserByResetPasswordToken(token);
+    if (count == null || count == 0) {
+      throw new UserNotFoundException("Không tìm thấy user với token: " + token);
+    }
+    return userRepository.findByResetPasswordToken(token);
+  }
+
+  public void saveResetPassword(User user, String password) {
+    user.setPassword(passwordEncoder.encode(password));
+    user.setResetPasswordToken("");
+    user.setResetPasswordSessionId("");
+    userRepository.save(user);
+  }
+
+    public User getBySessionId(String sessionId) throws UserNotFoundException {
+      Integer count = userRepository.countUserByresetPasswordSessionId(sessionId);
+      if (count == null || count == 0) {
+        throw new UserNotFoundException("Không tìm thấy user có yêu cầu tìm lại mật khẩu với sessionId: " + sessionId);
+      }
+      return userRepository.findByResetPasswordSessionId(sessionId);
+    }
+
+  public void clearForgotPasswordRequest(User user) {
+    user.setResetPasswordToken(null);
+    user.setResetPasswordSessionId(null);
+    user.setResetPasswordRequestTime(null);
+    user.setResetPasswordAttempt(0);
+    userRepository.save(user);
+  }
+
+  public void saveUser(User user) {
+    userRepository.save(user);
+  }
 }

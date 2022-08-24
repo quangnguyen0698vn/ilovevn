@@ -214,4 +214,8 @@ public class ProjectService {
     public Integer countAllStartedProjects() {
         return repo.countAllByStartedDateLessThanEqual(new Date());
     }
+
+    public Integer countAll() {
+        return repo.countAll();
+    }
 }

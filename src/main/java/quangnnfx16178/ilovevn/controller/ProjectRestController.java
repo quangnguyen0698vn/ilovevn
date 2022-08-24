@@ -41,4 +41,8 @@ public class ProjectRestController {
         return projectService.countAllStartedProjects();
     }
 
+
+    @GetMapping(value = "projects/sizeAll")
+    Integer numberOfAllProjects() { return projectService.countAll(); }
+
 }

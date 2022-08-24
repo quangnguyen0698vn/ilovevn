@@ -149,3 +149,7 @@
 .navbar-nav .nav-item .nav-link {
 	/*color: lawngreen;*/
 }
+
+.main-section img {
+	width: 80%!important;
+}

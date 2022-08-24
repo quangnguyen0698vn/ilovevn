@@ -27,10 +27,6 @@ public class Donation {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @Basic
-    @Column(name = "account_number", nullable = false, length = 15)
-    private String accountNumber;
-    @Basic
     @Column(name = "full_name", nullable = false, length = 100)
     private String fullName;
     @Basic
@@ -43,8 +39,9 @@ public class Donation {
     @Column(name = "message", nullable = true, length = 5000)
     private String message;
     @Basic
-    @Column(name = "state", nullable = false, length = 20)
-    private String state;
+    @Column(name = "state", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private StateType state;
     @Basic
     @Column(name = "created_time", nullable = true, updatable=false)
     @CreationTimestamp
@@ -67,8 +64,6 @@ public class Donation {
 
         if (!Objects.equals(id, donation.id)) return false;
         if (!Objects.equals(project, donation.project)) return false;
-        if (!Objects.equals(accountNumber, donation.accountNumber))
-            return false;
         if (!Objects.equals(fullName, donation.fullName)) return false;
         if (!Objects.equals(amount, donation.amount)) return false;
         if (!Objects.equals(transRefNo, donation.transRefNo)) return false;
@@ -85,7 +80,6 @@ public class Donation {
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (project != null ? project.hashCode() : 0);
-        result = 31 * result + (accountNumber != null ? accountNumber.hashCode() : 0);
         result = 31 * result + (fullName != null ? fullName.hashCode() : 0);
         result = 31 * result + (amount != null ? amount.hashCode() : 0);
         result = 31 * result + (transRefNo != null ? transRefNo.hashCode() : 0);

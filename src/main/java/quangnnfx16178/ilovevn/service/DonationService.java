@@ -1,24 +1,37 @@
 package quangnnfx16178.ilovevn.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import quangnnfx16178.ilovevn.entity.Donation;
+import quangnnfx16178.ilovevn.entity.StateType;
 import quangnnfx16178.ilovevn.repository.DonationRepository;
+import quangnnfx16178.ilovevn.repository.ProjectRepository;
 
+import javax.swing.plaf.nimbus.State;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DonationService {
-    @Autowired
-    private DonationRepository repo;
+
+    private final DonationRepository donationRepository;
+    private final ProjectRepository projectRepository;
 
     public List<Donation> listAll() {
-        return repo.findAll();
+        return donationRepository.findAll();
     }
 
-    public List<Long> listAllProjectRaisedAmount() {
-        return repo.findAllProjectRaisedAmount();
+    public Donation saveNewDonation(Donation donation) {
+        Donation persistedDonation = donationRepository.save(donation);
+        Long increasedAmount = 1L * persistedDonation.getAmount();
+        return persistedDonation;
     }
 
-    public List<Integer> listAllProjectIdSortedByRaisedAmountAsc() { return repo.findProjectIdSortByRaisedAmountAsc(); }
+    public Integer countAllByState(StateType state) {
+        return donationRepository.countAllByState(state);
+    }
+
+    public Long totalRaisedAmount(StateType state) {
+        return donationRepository.sumAllByState(state);
+    }
 }

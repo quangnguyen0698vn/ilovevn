@@ -31,6 +31,8 @@ public class SecurityConfig {
     private final DatabaseLoginSuccessHandler databaseLoginHandler;
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
+    private final UserDetailsService userDetailsService;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -39,10 +41,16 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/", "/charity", "/aboutus").permitAll()
                 .antMatchers( "/register",
+                        "/donate",
+                        "/forgotPassword",
+                        "/resetPasswordForm",
+                        "/resetPassword",
                         "/users/create_new_user",
                         "/api/users/check_unique_email/**",
                         "/api/projects/**",
                         "/api/charities/**",
+                        "/api/donations/**",
+                        "/view/**",
                         "/js/**",
                         "/css/**",
                         "/images/**")
@@ -59,6 +67,8 @@ public class SecurityConfig {
                     .permitAll()
                 .and().logout().logoutSuccessUrl("/").invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID").permitAll()
+                .and()
+                .rememberMe().key("uniqueAndSecret").userDetailsService(userDetailsService).tokenValiditySeconds(60*10) //10 minutes
                 .and()
                 .httpBasic(withDefaults());
         return http.build();

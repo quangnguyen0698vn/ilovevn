@@ -67,7 +67,12 @@ function addMoreProjects(projects, count, loaded) {
                     <div class="text-xs"">Đạt được</div>
                     <div class="text-xs"">${proj.raisedPercentage*100}%</div>    
                 </div>
-                <div class="flex-grow-2 align-content-right"><a href="#" class="btn btn-outline-success text-xs">Quyên góp</a></div> 
+                <div class="d-none donate-meta-data">
+                    <span id="spanMetaProjectName${proj.id}">${proj.name}</span>
+                    <span id="spanMetaBeneficiaryAccountNumber${proj.id}">${proj.charity.accountNumber}</span>
+                    <span id="spanMetaCharityName${proj.id}">${proj.charity.name}</span>
+                </div>
+                <div class="flex-grow-2 align-content-right"><a href="javascript:openModal(${proj.id})" class="btn btn-outline-success text-xs">Quyên góp</a></div> 
             </div>      
         </div>
     </div>
@@ -188,3 +193,97 @@ allLinks.forEach(function (link) {
 });
 
 //
+
+function openModal(id) {
+    let projectName = $("#spanMetaProjectName"+id).text();
+    let beneficiaryAccountNumber = $("#spanMetaBeneficiaryAccountNumber"+id).text();;
+    let charityName = $("#spanMetaCharityName"+id).text();;
+    $("#spanProjectName").text(projectName);
+    $("#spanBeneficiaryAccountNumber").text(beneficiaryAccountNumber);
+    $("#spanCharityName").text(charityName);
+    $("#modalHeaderFooter").modal("show");
+    $("#modalProjectId").attr("value", id);
+}
+
+$("#donateForm").validate({
+    rules: {
+        fullName: {
+            required: true
+        },
+        accountNumber: {
+            required: true,
+            digits: true,
+        },
+        amount: {
+            required: true,
+        },
+        trans_ref_no: {
+            required: true,
+            digits: true,
+        },
+        message: {
+            required: true,
+        },
+    },
+
+    messages: {
+        fullName: {
+            required: 'Bạn cần nhập thông tin này',
+        },
+        accountNumber: {
+            required: 'Bạn cần nhập thông tin này',
+            digits: 'Thông tin này chỉ bao gồm chữ số 0-9',
+        },
+        amount: {
+            required: 'Bạn cần nhập thông tin này',
+        },
+        trans_ref_no: {
+            required: 'Bạn cần nhập thông tin này',
+            digits: 'Thông tin này chỉ bao gồm chữ số 0-9',
+        },
+        message: {
+            required: 'Bạn cần nhập thông tin này',
+        },
+    }
+});
+
+function myCounter(classSelector) {
+    jQuery({ Counter: 0 }).animate({ Counter: $(classSelector).text() }, {
+        duration: 1000,
+        easing: 'swing',
+        step: function () {
+            $(classSelector).text(Math.ceil(this.Counter));
+        }
+    });
+}
+
+$.ajax({
+    url: window.location.origin + contextPath + '/api/projects/size',
+    success: function(number) {
+        // console.log('number of projects: '+  number);
+        $('.number-of-projects').text(number);
+        myCounter('.number-of-projects');
+    }
+});
+
+$.ajax({
+    url: window.location.origin + contextPath + '/api/donations/totalRaisedAmount',
+    success: function(number) {
+        // console.log('number of projects: '+  number);
+        $('.sum-of-raised-amount').text(number / 1000000);
+        myCounter('.sum-of-raised-amount');
+    }
+});
+
+$.ajax({
+    url: window.location.origin + contextPath + '/api/donations/size',
+    success: function(number) {
+        // console.log('number of projects: '+  number);
+        $('.number-of-donations').text(number);
+        myCounter('.number-of-donations');
+    }
+});
+
+
+
+

@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import quangnnfx16178.ilovevn.entity.Donation;
+import quangnnfx16178.ilovevn.entity.StateType;
 
 import java.util.List;
 
@@ -21,6 +22,8 @@ public interface DonationRepository extends JpaRepository<Donation, Integer> {
             "order by raise_amount asc;", nativeQuery = true
     )
     public List<Integer> findProjectIdSortByRaisedAmountAsc();
+    Integer countAllByState(StateType state);
 
-
+    @Query("SELECT sum(d.amount) FROM Donation d WHERE d.state = :state")
+    Long sumAllByState(StateType state);
 }

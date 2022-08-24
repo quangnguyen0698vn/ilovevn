@@ -8,10 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import quangnnfx16178.ilovevn.entity.UserDTO;
 import quangnnfx16178.ilovevn.security.MyUserDetails;
 
@@ -27,10 +24,10 @@ public class MainController {
                                 Model model, HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         boolean error = errorStr != null && errorStr.equals("true");
-//        log.info("this controller is called");
-//        log.info("errorStr = " + errorStr);
-//        log.info("error = " + error);
-//        log.info("message = " + message);
+
+        String text = "Đăng nhập";
+        model.addAttribute("title", text);
+
         if (error || authentication == null || authentication instanceof AnonymousAuthenticationToken) {
             if (error) {
                 model.addAttribute("error", true);
@@ -38,13 +35,17 @@ public class MainController {
                 request.getSession().invalidate();
             }
             return "login_form";
-        } else {
-            log.info(authentication.getPrincipal());
-//            MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
-//            log.info(user.getFullName());
         }
 
         return "redirect:/";
+    }
+
+    @GetMapping("/forgotPassword")
+    public String showForgotPasswordForm(Model model) {
+        String text = "Quên mật khẩu";
+        model.addAttribute("title", text);
+        model.addAttribute("sendEmail", false);
+        return "forgot_password_form";
     }
 
     @GetMapping("/register")
@@ -79,7 +80,7 @@ public class MainController {
 
     @GetMapping("/aboutus")
     public String aboutUs() {
-        return "index";
+        return "aboutus";
     }
 
     @GetMapping("/admin/dashboard")

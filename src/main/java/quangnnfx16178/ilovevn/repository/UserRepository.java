@@ -30,4 +30,12 @@ public interface UserRepository extends PagingAndSortingRepository<User, Integer
     void updateAuthenticationType(Integer id, AuthenticationType type);
 
     User findByEmail(String email);
+
+    Integer countUserByResetPasswordToken(String token);
+
+    User findByResetPasswordToken(String token);
+
+    Integer countUserByresetPasswordSessionId(String sessionId);
+
+    User findByResetPasswordSessionId(String sessionId);
 }

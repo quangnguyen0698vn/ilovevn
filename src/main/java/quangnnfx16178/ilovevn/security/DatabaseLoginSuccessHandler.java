@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -40,8 +41,8 @@ public class DatabaseLoginSuccessHandler extends SavedRequestAwareAuthentication
 
     protected void handle(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException {
         final String targetUrl = determineTargetUrl(authentication);
-        UserDTO principal = (UserDTO) authentication.getPrincipal();
-        String email = principal.getEmail();
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        String email = principal.getUsername();
         User user = null;
         try {
             user = userService.getByEmail(email);
@@ -50,7 +51,7 @@ public class DatabaseLoginSuccessHandler extends SavedRequestAwareAuthentication
             throw new RuntimeException(e);
         }
         log.info("Login successfully: " + user.getFullName());
-        log.info(authentication.getPrincipal());
+//        log.info(authentication.getPrincipal());
         userService.updateAuthenticationType(user, AuthenticationType.DATABASE);
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }

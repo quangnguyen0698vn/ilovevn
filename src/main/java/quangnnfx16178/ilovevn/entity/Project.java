@@ -75,6 +75,10 @@ public class Project {
     private Long raisedAmount = 0L;
 
     @Basic
+    @Column(name = "number_donations")
+    private Integer numberOfDonations;
+
+    @Basic
     @Column(name = "target_amount", nullable = false)
     private Long targetAmount;
 
@@ -94,23 +98,11 @@ public class Project {
     @JsonIgnore
     private Set<ProjectImage> images = new HashSet<>();
 
-    /**
-     * Mapping như dưới đây để lấy thông tin về những quyên góp cho dự án này
-     * Hiện tại chưa cần sử dụng nhưng có thể tương lai sẽ cần
-     */
+
     @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
     @OrderBy("id asc")
     @JsonIgnore
     private List<Donation> donations = new ArrayList<>();
-
-    public int getNumberOfDonations() {
-        return donations.size();
-    }
-
-    /**
-     * So sánh ngày bắt đầu thực hiên quyên góp với ngày hôm nay
-     * @return true nếu dự án đã bắt đầu quyên góp, false nếu dự án chưa được bắt đầu
-     */
 
     public Long getNumberOfDaysLeft() {
         if (this.startedDate == null || this.expiredDate == null) return -1L;
@@ -119,6 +111,10 @@ public class Project {
         return diff;
     }
 
+    /**
+     * So sánh ngày bắt đầu thực hiên quyên góp với ngày hôm nay
+     * @return true nếu dự án đã bắt đầu quyên góp, false nếu dự án chưa được bắt đầu
+     */
     public boolean isAlreadyStarted() {
         if (this.startedDate == null) return false;
         java.util.Date date = new java.util.Date();

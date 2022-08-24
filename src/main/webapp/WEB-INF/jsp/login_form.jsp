@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Title</title>
+    <title><c:out value="${title}"></c:out></title>
     <jsp:include page="common/cssFramework.jsp"></jsp:include>
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -10,7 +10,7 @@
 
     <jsp:include page="header.jsp"/>
 
-    <h3 class="text-center">Đăng nhập vào hệ thống</h3>
+    <h3 class="text-center"><c:out value="${title}"></c:out></h3>
     <div class="container mt-4">
     <form action="<c:url value="/login" context="${pageContext.request.contextPath}"></c:url>"
           method="post"
@@ -18,10 +18,15 @@
           id="loginForm"
     >
         <div class="border border-secondary rounded p-3">
+            <c:if test="${resetPasswordSuccess}">
+                <p class="text-success"><c:out value="${resetPasswordSuccessMessage}"></c:out></p>
+            </c:if>
             <p>Mời bạn nhập thông tin đăng nhập</p>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p>
-                <input type="email" name="email" class="form-control" placeholder="E-mail">
+                <input type="email" name="email" class="form-control" placeholder="E-mail"
+                <c:if test="${resetPasswordSuccess}">value="${resetPasswordEmail}"</c:if>
+                >
             </p>
             <p>
                 <input type="password" name="password" class="form-control" placeholder="Password">
@@ -36,6 +41,9 @@
             </p>
             <p>
                 <input type="submit" value="Login" class="btn btn-primary">
+            </p>
+            <p>
+                <a href="<c:url value="/forgotPassword" context="${pageContext.request.contextPath}"></c:url>">Quên mật khẩu?</a>
             </p>
         </div>
     </form>
