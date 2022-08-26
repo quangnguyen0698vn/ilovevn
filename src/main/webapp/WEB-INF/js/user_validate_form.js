@@ -103,6 +103,39 @@ $(document).ready(function() {
     //     return false;
     // });
 
+    $("#registrationForm").validate({
+        rules: {
+            fullName: {
+                required: true
+            },
+            email: {
+                check_email_unique: true,
+                required: true,
+            },
+            // password: {
+            //     strong_password: true
+            // },
+            // repeatedPassword: {
+            //     equalTo: "#password"
+            // },
+            phoneNumber: {
+                digits: true,
+            }
+        },
+
+        messages: {
+            fullName: {
+                required: 'Bạn phải nhập họ và tên'
+            },
+            email: {
+                required: 'Trường này không được để trống',
+            },
+            phoneNumber: {
+                digits: 'Chỉ nhập số 0-9 cho trường số điện thoại',
+            }
+        }
+    });
+
     $("#userForm").validate({
         rules: {
             fullName: {

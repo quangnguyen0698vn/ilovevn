@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>c:out value="${project.name}"></c:out></title>
+    <title><c:out value="${charity.name}"></c:out></title>
     <jsp:include page="common/cssFramework.jsp"/>
 
     <link rel="stylesheet" href="<c:url value="/css/general.css" context="${pageContext.request.contextPath}"></c:url>"/>
@@ -29,49 +29,42 @@
         </h4>
       </div>
     </c:if>
-    <c:if test="${project != null}">
-    <div class="container">
-      <h1 class="text-success fs-3"><c:out value="${project.name}"></c:out></h1>
-      ❤<c:out value="${project.shortDescription}" escapeXml="false"></c:out>❤
 
-      <div id="carouselControls" class="carousel slide m-4" data-bs-ride="carousel">
-        <div class="carousel-inner container">
-          <div class="carousel-item active">
-            <img src="<c:url value="${project.imagePath}" context="${pageContext.request.contextPath}"></c:url>" alt="${project.name}" class="d-block w-100">
-          </div>
-          <c:forEach items="${project.images}" var="image">
-            <div class="carousel-item">
-              <img src="<c:url value="${image.imagePath}" context="${pageContext.request.contextPath}"></c:url>" alt="${image.fileName}" class="d-block w-100">
-            </div>
-          </c:forEach>
-        </div>
-        <button type="button" class="carousel-control-prev" data-bs-target="#carouselControls" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button type="button" class="carousel-control-next" data-bs-target="#carouselControls" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
+    <c:if test="${charity != null}">
+
+    <div class="container">
+
+      <div class="text-center">
+
+        <img src="<c:url value="${charity.charityLogoPath}" context="${pageContext.request.contextPath}"></c:url>" class="img-fluid mb-3" style="max-width: 300px; max-height: 300px"
+             alt="Charity Logo" />
+
+        <p class="text-muted"><c:out value="${charity.shortDescription}"></c:out>
       </div>
 
-
-      <c:out value="${project.fullDescription}" escapeXml="false"></c:out>
+      <div class="container mt-3">
+        <c:out value="${charity.fullDescription}" escapeXml="false"></c:out>
+      </div>
     </div>
     </c:if>
 
   </section>
 
+  <section id="charitySection" class="container mb-5" style="max-width: 68rem">
+    <div class="text-center">
+      <h3 class="text-success fs-4">Các đối tác đồng hành</h3>
+    </div>
+
+    <jsp:include page="fragments/charity_container.jsp"/>
+  </section>
 
   <jsp:include page="footer.jsp"/>
 
   <jsp:include page="common/jsFramework.jsp"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-  <script src="js/homepage_render.js">
+  <script src="<c:url value="/js/homepage_render.js" context="${pageContext.request.contextPath}"></c:url>">
   </script>
-
-
 
   </body>
 

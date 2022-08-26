@@ -11,8 +11,8 @@
     <title>I love VN - Hệ thống quyên góp từ thiện</title>
     <jsp:include page="common/cssFramework.jsp"/>
 
-    <link rel="stylesheet" href="<c:url value="/css/general.css" context="${pageContext.request.contextPath}"></c:url>"/>
-    <link rel="stylesheet" href="<c:url value="/css/style.css" context="${pageContext.request.contextPath}"></c:url>"/>
+    <link rel="stylesheet" href="css/general.css"/>
+    <link rel="stylesheet" href="css/style.css" />
   </head>
 
   <body class="d-flex flex-column min-vh-100">
@@ -30,24 +30,25 @@
   </section>
   </c:if>
 
-  <jsp:include page="fragments/here_section.jsp"/>
+<%--  <jsp:include page="fragments/here_section.jsp"/>--%>
 
-  <%--  Các hoàn cảnh quyên góp  --%>
-    <section id="projectSection" class="container mb-5" style="max-width: 68rem">
-      <div class="text-center">
-        <h3 class="text-success fs-4">Các hoàn cảnh quyên góp</h3>
-      </div>
+  <section id="charitySection" class="container mb-5" style="max-width: 68rem">
+    <div>
+      <h3 class="text-success fs-3">Các đối tác đồng hành</h3>
+    </div>
 
-      <jsp:include page="fragments/project_container.jsp"/>
-    </section>
+    <jsp:include page="fragments/charity_container.jsp"/>
+  </section>
 
-    <section id="charitySection" class="container mb-5" style="max-width: 68rem">
-      <div class="text-center">
-          <h3 class="text-success fs-4">Các đối tác đồng hành</h3>
-      </div>
+  <section id="projectSection" class="container mb-5" style="max-width: 68rem">
+    <div class="text-center">
+      <h3 class="text-success fs-4">Các hoàn cảnh quyên góp</h3>
+    </div>
 
-      <jsp:include page="fragments/charity_container.jsp"/>
-    </section>
+    <jsp:include page="fragments/project_container.jsp"/>
+  </section>
+
+
 
   <jsp:include page="fragments/donateModal.jsp"/>
 

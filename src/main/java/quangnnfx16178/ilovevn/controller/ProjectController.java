@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import quangnnfx16178.ilovevn.entity.Charity;
 import quangnnfx16178.ilovevn.entity.Project;
+import quangnnfx16178.ilovevn.exception.CharityNotFoundException;
 import quangnnfx16178.ilovevn.util.ProjectSaveUtil;
 import quangnnfx16178.ilovevn.service.ProjectService;
 import quangnnfx16178.ilovevn.service.CharityService;
@@ -290,6 +291,8 @@ public class ProjectController {
             ra.addFlashAttribute("message", e.getMessage());
             log.warn(e.getMessage());
             return defaultRedirectURL;
+        } catch (CharityNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 

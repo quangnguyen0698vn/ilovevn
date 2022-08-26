@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import quangnnfx16178.ilovevn.entity.Charity;
+import quangnnfx16178.ilovevn.exception.CharityNotFoundException;
 import quangnnfx16178.ilovevn.repository.CharityRepository;
 
 import java.util.List;
@@ -28,7 +29,11 @@ public class CharityService {
         return aPage.getContent();
     }
 
-    public Charity getCharityById(Integer id) {
+    public Charity getCharityById(Integer id) throws CharityNotFoundException {
+        Integer count = repo.countCharityById(id);
+        if (count == null || count == 0) {
+            throw new CharityNotFoundException("Không tồn tại đơn vị với mã số: " + id);
+        }
         return repo.findCharityById(id);
     }
 

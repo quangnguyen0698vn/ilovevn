@@ -73,7 +73,7 @@ public class EmailConfig {
                         "Hệ thống ghi nhận bạn đang thực hiện tính năng Forgot Password!\n" +
                         "Để tiếp tục lấy lại mật khẩu, bạn cần sử dụng token dưới đây\n" +
                         "- Token: %s\n" +
-                                "Token sẽ hết hạn sau 10 phút\n" +
+                                "Token sẽ hết hạn sau 3 phút\n" +
                         "Nếu bạn không hề sử dụng tính năng thay đổi mật khẩu, hãy bỏ qua email này!\n" +
                                 "Trân trọng cảm ơn!"
         );

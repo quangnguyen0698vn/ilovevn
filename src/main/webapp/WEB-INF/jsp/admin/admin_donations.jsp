@@ -20,4 +20,7 @@
 <h1>Trang này đang được xây dựng</h1>
 
 <jsp:include page="admin_footer.jsp"/>
+
+<%-- js framework --%>
+<jsp:include page="../common/jsFramework.jsp"/>
 </body>

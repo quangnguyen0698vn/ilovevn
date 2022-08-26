@@ -116,7 +116,7 @@ function addMoreCharities(charities, count, loaded) {
                 </h5>
                 <p class="text-xs mx-2">${charity.shortDescription}</p>
                 <p>
-                    <a class="text-xs mx-2 link-stretched text-decoration-none ${charity.havingDetails == false ? 'd-none' : ''}" href="${contextPath}/view/charities?=${charity.id}">Xem chi tiết >></a>
+                    <a class="text-xs mx-2 link-stretched text-decoration-none ${charity.havingDetails == false ? 'd-none' : ''}" href="${contextPath}/view/charity?id=${charity.id}">Xem chi tiết >></a>
                 </p>
             </div>
         </div>

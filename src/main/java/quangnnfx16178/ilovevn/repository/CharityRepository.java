@@ -16,4 +16,6 @@ public interface CharityRepository extends JpaRepository<Charity, Integer> {
 
     @Query("SELECT count(c) FROM Charity c")
     Integer countAll();
+
+    Integer countCharityById(Integer id);
 }

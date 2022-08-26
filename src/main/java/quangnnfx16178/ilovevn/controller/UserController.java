@@ -300,7 +300,7 @@ public class UserController {
                                       @RequestParam String address,
                                       @RequestParam String phoneNumber,
                                       @RequestParam(value = "fileImage") MultipartFile avatar,
-                                      Model model,
+                                      RedirectAttributes ra,
                                       HttpServletRequest request) {
         log.info("fullName = " + fullName);
         log.info("email = " + email);
@@ -311,7 +311,8 @@ public class UserController {
 
         userService.registerUser(fullName, email, password, address, phoneNumber, avatar, request);
 
-        model.addAttribute("message", "Create new user");
+        ra.addFlashAttribute("success", true);
+        ra.addFlashAttribute("message", "Tạo tài khoản mới với email " + email + " thành công!");
         return "redirect:/";
     }
 

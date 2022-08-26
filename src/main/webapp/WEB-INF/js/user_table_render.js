@@ -225,7 +225,7 @@ $(document).ready( function() {
                             class="text-success" title="Chỉnh sửa tài khoản này">
                             <i class="fa fa-edit fa-2x" aria-hidden="true"></i>
                         </a>
-                        
+                        <!--
                         <a href="${urlDelete}" 
                             data-user-id=${data.id} 
                             data-user-email=${data.email} 
@@ -234,7 +234,7 @@ $(document).ready( function() {
                             class="text-muted link-delete" title="Xóa tài khoản này">
                             <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
                         </a>
-                 
+                        -->
                       `;
 
             // debug('result at line 288: ', result);

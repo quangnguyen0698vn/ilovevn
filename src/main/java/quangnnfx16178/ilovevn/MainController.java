@@ -32,7 +32,7 @@ public class MainController {
             if (error) {
                 model.addAttribute("error", true);
                 model.addAttribute("message", message);
-                request.getSession().invalidate();
+//                request.getSession().invalidate();
             }
             return "login_form";
         }
@@ -76,7 +76,7 @@ public class MainController {
     }
 
     @GetMapping("/charity")
-    public String viewCharity() { return "index"; }
+    public String viewCharity() { return "charity"; }
 
     @GetMapping("/aboutus")
     public String aboutUs() {
