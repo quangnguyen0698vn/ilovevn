@@ -60,7 +60,7 @@ public class UserDTO implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.isEnabled();
+        return this.enabled;
     }
 
     public String getProfilePhotoPath() {

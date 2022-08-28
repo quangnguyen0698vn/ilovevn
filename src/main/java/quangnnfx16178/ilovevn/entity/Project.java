@@ -144,6 +144,14 @@ public class Project {
         return images.stream().anyMatch(image -> image.getFileName().equals(fileName));
     }
 
+    public void addDonation(Donation donation) {
+        if (this.raisedAmount == null) this.raisedAmount = 0L;
+        if (this.numberOfDonations == null) this.numberOfDonations = 0;
+        if (this.raisedPercentage == null) this.raisedPercentage = 0d;
+        this.raisedAmount += donation.getAmount();
+        this.numberOfDonations += 1;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

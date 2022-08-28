@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>c:out value="${project.name}"></c:out></title>
+    <title><c:out value="${project.name}"></c:out></title>
     <jsp:include page="common/cssFramework.jsp"/>
 
     <link rel="stylesheet" href="<c:url value="/css/general.css" context="${pageContext.request.contextPath}"></c:url>"/>

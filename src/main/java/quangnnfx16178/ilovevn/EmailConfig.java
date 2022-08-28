@@ -79,4 +79,38 @@ public class EmailConfig {
         );
         return message;
     }
+
+    @Bean(name = "donateStateAcceptedMessage")
+    public SimpleMailMessage donateStateAcceptedMessage() {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setText(
+                "Xin chào bạn %s,\n" +
+                        "Hệ thống ghi nhận bạn đã quyên góp thành công với những thông tin sau:\n" +
+                        "- Mã số giao dịch: %s\n" +
+                        "- Số tiền: %s\n" +
+                        "- Tên dự án: %s\n" +
+                        "- Lời nhắn: %s\n" +
+                        "Hệ thống ilovevn xin ghi nhận và biết ơn sự đóng góp của bạn, chúc bạn thành công và có nhiều niềm vui trong cuộc sống!\n" +
+                        "Trân trọng."
+        );
+        return message;
+    }
+
+    @Bean(name = "donateStateRejectedMessage")
+    public SimpleMailMessage donateStateRejectedMessage() {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setText(
+                "Xin chào bạn %s,\n" +
+                        "Giao dịch quyên góp của bạn đã bị từ chối với lý do thông tin không chính xác:\n" +
+                        "- Mã số giao dịch: %s\n" +
+                        "- Số tiền: %s\n" +
+                        "- Tên dự án: %s\n" +
+                        "- Lời nhắn: %s\n" +
+                        "Nhân viên của ilovevn sẽ liên hệ với bạn và kiểm tra lại thông tin một lần nữa!\n" +
+                        "Hệ thống ilovevn xin ghi nhận và biết ơn sự đóng góp của bạn, chúc bạn thành công và có nhiều niềm vui trong cuộc sống!\n" +
+                        "Trân trọng."
+        );
+        return message;
+    }
+
 }

@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import quangnnfx16178.ilovevn.entity.AuthenticationType;
 import quangnnfx16178.ilovevn.entity.Role;
 import quangnnfx16178.ilovevn.entity.User;
 import quangnnfx16178.ilovevn.entity.UserDTO;
@@ -216,7 +217,8 @@ public class UserController {
 
 
     @GetMapping("/admin/users/edit/{id}")
-    public String editUser(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
+    public String editUser(@PathVariable("id") Integer id, Model model, RedirectAttributes ra,
+                           @RequestParam("readonly") Boolean readonly) {
         User user = null;
         try {
             user = userService.getById(id);
@@ -233,6 +235,7 @@ public class UserController {
 
         List<Role> roles = roleService.listAll();
         String text = "Cập nhật thông tin tài khoản mã số: " + id;
+        if (readonly) text = "Xem thông tin tài khoản mã số: " +id;
         model.addAttribute("title", text);
         model.addAttribute("heading", text);
         model.addAttribute("roles", roles);
@@ -248,7 +251,7 @@ public class UserController {
             @RequestParam String phoneNumber,
             @RequestParam Integer roleId,
             @RequestParam Integer enabled,
-            @RequestParam(value = "fileImage") MultipartFile avatar,
+            @RequestParam(value = "fileImage", required = false) MultipartFile avatar,
             Model model,
             RedirectAttributes ra,
             HttpServletRequest request) {
@@ -283,6 +286,7 @@ public class UserController {
             user.setEnabled(enabled == 1);
             String password = RandomStringUtil.generateRandomPassword(10);
             user.setPassword(password);
+            user.setAuthenticationType(AuthenticationType.DATABASE);
             user = userService.registerUser(user, avatar, request);
             String text = "Tạo mới thành công người dùng với mã số: " + user.getId();
             log.info(text);
@@ -314,11 +318,6 @@ public class UserController {
         ra.addFlashAttribute("success", true);
         ra.addFlashAttribute("message", "Tạo tài khoản mới với email " + email + " thành công!");
         return "redirect:/";
-    }
-
-    @GetMapping("/admin/users")
-    public String listUsers() {
-        return "admin/admin_users";
     }
 
     @GetMapping("/admin/users/{id}/enabled/{status}")

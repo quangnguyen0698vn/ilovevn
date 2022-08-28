@@ -1,6 +1,5 @@
 package quangnnfx16178.ilovevn.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
@@ -8,6 +7,7 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import quangnnfx16178.ilovevn.entity.Donation;
 import quangnnfx16178.ilovevn.entity.User;
 
 @Service("EmailService")
@@ -25,6 +25,14 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     @Qualifier("resetPasswordTokenMessage")
     private SimpleMailMessage resetTokenTemplate;
+
+    @Autowired
+    @Qualifier("donateStateAcceptedMessage")
+    private SimpleMailMessage donateStateAcceptedMessageTemplate;
+
+    @Autowired
+    @Qualifier("donateStateRejectedMessage")
+    private SimpleMailMessage donateStateRejectedMessageTemplate;
 
 
     @Override
@@ -51,5 +59,21 @@ public class EmailServiceImpl implements EmailService {
     public void sendResetTokenEmail(User user, String token) {
         String text = String.format(resetTokenTemplate.getText(), user.getFullName(), token);
         sendSimpleMessage(user.getEmail(), "ilovevn - Reset Password Token", text);
+    }
+
+    @Override
+    public void sendDonateAcceptedStateEmail(Donation donation) {
+        User user = donation.getUser();
+        if (user == null) return;
+        String text = String.format(donateStateAcceptedMessageTemplate.getText(), user.getFullName(), donation.getTransRefNo(), donation.getAmount(), donation.getProject().getName(), donation.getMessage());
+        sendSimpleMessage(user.getEmail(), "Bạn đã quyên góp thành công cho dự án " + donation.getProject().getName(), text);
+    }
+
+    @Override
+    public void sendDonateRejectedStateEmail(Donation donation) {
+        User user = donation.getUser();
+        if (user == null) return;
+        String text = String.format(donateStateRejectedMessageTemplate.getText(), user.getFullName(), donation.getTransRefNo(), donation.getAmount(), donation.getProject().getName(), donation.getMessage());
+        sendSimpleMessage(user.getEmail(), "Xin kiểm tra lại thông tin quyên góp cho dự án " + donation.getProject().getName(), text);
     }
 }

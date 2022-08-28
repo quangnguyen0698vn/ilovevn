@@ -116,8 +116,9 @@
 
         <div class="text-center">
             <c:if test="${user != null}">
-                <input type="submit" value="Cập nhập" class="btn btn-primary" />
-
+                <c:if test="${param.readonly == null}">
+                    <input type="submit" value="Cập nhập" class="btn btn-primary" />
+                </c:if>
             </c:if>
 
             <c:if test="${user == null}">

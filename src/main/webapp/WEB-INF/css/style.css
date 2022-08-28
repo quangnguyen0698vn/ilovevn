@@ -153,3 +153,25 @@
 .main-section img {
 	width: 80%!important;
 }
+
+.tag {
+	display: inline-block;
+	padding: 0.4rem 0.8rem;
+	font-size: 1rem;
+	text-transform: uppercase;
+	color: #333;
+	border-radius: 100px;
+	font-weight: 600;
+}
+
+.accepted-tag {
+	background-color: #6CC4A1;
+}
+
+.rejected-tag {
+	background-color: #FF4A4A;
+}
+
+.pending-tag {
+	background-color: #A2B5BB;
+}

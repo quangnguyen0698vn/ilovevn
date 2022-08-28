@@ -1,5 +1,7 @@
 package quangnnfx16178.ilovevn.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -26,4 +28,12 @@ public interface DonationRepository extends JpaRepository<Donation, Integer> {
 
     @Query("SELECT sum(d.amount) FROM Donation d WHERE d.state = :state")
     Long sumAllByState(StateType state);
+
+    @Query("SELECT count(d) FROM Donation d")
+    Integer countAll();
+
+    @Query("SELECT d FROM Donation d WHERE CONCAT(d.fullName, ' ', d.transRefNo) LIKE %?1%")
+    Page<Donation> findAll(String keyword, Pageable pageable);
+
+    Integer countById(Integer id);
 }

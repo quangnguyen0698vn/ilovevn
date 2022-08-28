@@ -65,7 +65,7 @@ function addMoreProjects(projects, count, loaded) {
                 </div>
                 <div class="flex-grow-1 text-xs">
                     <div class="text-xs"">Đạt được</div>
-                    <div class="text-xs"">${proj.raisedPercentage*100}%</div>    
+                    <div class="text-xs"">${Math.round(proj.raisedPercentage*100, 2)}%</div>    
                 </div>
                 <div class="d-none donate-meta-data">
                     <span id="spanMetaProjectName${proj.id}">${proj.name}</span>

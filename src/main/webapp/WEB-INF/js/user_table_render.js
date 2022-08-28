@@ -84,7 +84,7 @@ $.fn.dataTable.pipeline = function (opts) {
                 url: conf.url,
                 data: {
                     pageSize: request.length,
-                    pageNum: (request.length + request.start) / request.length,
+                    pageNum: Math.floor((request.length + request.start) / request.length),
                     sortField: request.columns[request.order[0].column].data,
                     sortDir: request.order[0].dir,
                     keyword: request.search.value
